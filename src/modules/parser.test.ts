@@ -1,4 +1,4 @@
-import { advance, breakLine, hasMoreLines, removeComments } from "./parser";
+import { advance, breakLine, commandType, hasMoreLines, removeComments } from "./parser";
 
 describe('Parser', () => {
 
@@ -61,5 +61,34 @@ describe('Parser', () => {
             const result = removeComments(input);
             expect(result).toEqual([]);
         });
+    });
+
+    describe('commandType', () => {
+        it('should return the correct command type for C_ARITHMETIC', () => {
+            const testCommands: [string, string][] = [
+                ['add', 'C_ARITHMETIC'],
+                ['sub', 'C_ARITHMETIC'],
+                ['neg', 'C_ARITHMETIC'],
+                ['eq', 'C_ARITHMETIC'],
+                ['gt', 'C_ARITHMETIC'],
+                ['lt', 'C_ARITHMETIC'],
+                ['and', 'C_ARITHMETIC'],
+                ['or', 'C_ARITHMETIC'],
+                ['not', 'C_ARITHMETIC']
+            ];
+
+            testCommands.forEach(([command, expectedType]) => {
+                const result = commandType(command);
+                expect(result).toBe(expectedType);
+            });
+        });
+
+        it('should return the correct command type for C_PUSH', () => {
+            const command = 'push constant 10';
+            const result = commandType(command);
+            expect(result).toBe('C_PUSH');
+        });
+
+        // Add more tests for other command types as needed
     });
 });
