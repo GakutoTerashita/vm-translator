@@ -1,6 +1,28 @@
-import { breakLine, hasMoreLines, removeComments } from "./parser";
+import { advance, breakLine, hasMoreLines, removeComments } from "./parser";
 
 describe('Parser', () => {
+
+    describe('advance', () => {
+        it('update command and lines when there are more lines', () => {
+            const parser = {
+                lines: ['line1', 'line2'],
+                command: ''
+            };
+            const result = advance(parser);
+            expect(result).toEqual({
+                lines: ['line2'],
+                command: 'line1'
+            });
+        });
+
+        it('throw an error when there are no more lines', () => {
+            const parser = {
+                lines: [],
+                command: ''
+            };
+            expect(() => advance(parser)).toThrow('No more lines to parse');
+        });
+    });
 
     describe('hasMoreLines', () => {
         it('return true if there are more lines', () => {

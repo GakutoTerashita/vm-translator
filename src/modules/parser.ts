@@ -1,10 +1,17 @@
 type Parser = {
     lines: string[];
-    instruction: string;
+    command: string;
 };
 
 export const advance = (parser: Parser): Parser => {
-    // ...
+    if (!hasMoreLines(parser.lines)) {
+        throw new Error('No more lines to parse');
+    }
+
+    return {
+        lines: parser.lines.slice(1),
+        command: parser.lines[0] || ''
+    }
 };
 
 export const hasMoreLines = (lines: string[]): boolean => (
