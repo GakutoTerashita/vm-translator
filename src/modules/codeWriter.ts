@@ -10,3 +10,12 @@ export const createStream = (): WriteStream => {
     const stream = createWriteStream(fileName, 'utf8');
     return stream;
 };
+
+export const writePushPop = (
+    stream: WriteStream,
+    command: string,
+    segment: string,
+    index: number
+): void => {
+
+};
