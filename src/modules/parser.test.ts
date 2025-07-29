@@ -1,4 +1,4 @@
-import { advance, breakLine, commandType, hasMoreLines, removeComments } from "./parser";
+import { advance, arg1, arg2, breakLine, commandType, hasMoreLines, removeComments } from "./parser";
 
 describe('Parser', () => {
 
@@ -129,6 +129,56 @@ describe('Parser', () => {
             const command = 'call MyFunction 2';
             const result = commandType(command);
             expect(result).toBe('C_CALL');
+        });
+    });
+
+    describe('arg1', () => {
+        it('return the first argument for C_ARITHMETIC commands', () => {
+            const command = 'add';
+            const result = arg1(command);
+            expect(result).toBe('add');
+        });
+
+        it('return the second part of the command for non-arithmetic commands', () => {
+            const command = 'push constant 10';
+            const result = arg1(command);
+            expect(result).toBe('constant');
+        });
+
+        it('throw an error if the command does not have an argument', () => {
+            const command = 'return';
+            expect(() => arg1(command)).toThrow('Command does not have an argument: return');
+        });
+    });
+
+    describe('arg2', () => {
+        it('return the second argument for C_PUSH commands', () => {
+            const command = 'push constant 10';
+            const result = arg2(command);
+            expect(result).toBe('10');
+        });
+
+        it('return the second argument for C_POP commands', () => {
+            const command = 'pop local 0';
+            const result = arg2(command);
+            expect(result).toBe('0');
+        });
+
+        it('return the second argument for C_FUNCTION commands', () => {
+            const command = 'function MyFunction 2';
+            const result = arg2(command);
+            expect(result).toBe('2');
+        });
+
+        it('return the second argument for C_CALL commands', () => {
+            const command = 'call MyFunction 2';
+            const result = arg2(command);
+            expect(result).toBe('2');
+        });
+
+        it('throw an error if the command does not have a second argument', () => {
+            const command = 'push constant';
+            expect(() => arg2(command)).toThrow('Command does not have a second argument: push constant');
         });
     });
 });

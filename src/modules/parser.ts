@@ -75,3 +75,55 @@ export const commandType = (command: string): CommandType => {
             throw new Error(`Unknown command type: ${cmd}`);
     }
 };
+
+export const arg1 = (command: string): string => {
+    const parts = command.split(' ');
+
+    if (commandType(command) === 'C_ARITHMETIC') {
+
+        const val = parts[0];
+
+        if (!val) {
+            throw new Error(`Command does not have an argument: ${command}`);
+        }
+
+        return val;
+    } else if (parts.length > 1) {
+
+        const val = parts[1];
+
+        if (!val) {
+            throw new Error(`Command does not have an argument: ${command}`);
+        }
+
+        return val;
+    }
+
+    throw new Error(`Command does not have an argument: ${command}`);
+};
+
+export const arg2 = (command: string): string => {
+    const parts = command.split(' ');
+
+    if (
+        commandType(command) === 'C_PUSH' ||
+        commandType(command) === 'C_POP' ||
+        commandType(command) === 'C_FUNCTION' ||
+        commandType(command) === 'C_CALL'
+    ) {
+
+        if (parts.length < 3) {
+            throw new Error(`Command does not have a second argument: ${command}`);
+        }
+
+        const val = parts[2];
+
+        if (!val) {
+            throw new Error(`Command does not have a second argument: ${command}`);
+        }
+
+        return val;
+    }
+
+    throw new Error(`Command does not have a second argument: ${command}`);
+};
