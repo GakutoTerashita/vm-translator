@@ -59,6 +59,18 @@ export const commandType = (command: string): CommandType => {
             return 'C_PUSH';
         case 'pop':
             return 'C_POP';
+        case 'label':
+            return 'C_LABEL';
+        case 'goto':
+            return 'C_GOTO';
+        case 'if-goto':
+            return 'C_IF';
+        case 'function':
+            return 'C_FUNCTION';
+        case 'return':
+            return 'C_RETURN';
+        case 'call':
+            return 'C_CALL';
         default:
             throw new Error(`Unknown command type: ${cmd}`);
     }

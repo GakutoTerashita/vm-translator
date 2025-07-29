@@ -94,6 +94,41 @@ describe('Parser', () => {
             const result = commandType(command);
             expect(result).toBe('C_POP');
         });
-        // Add more tests for other command types as needed
+
+        it('return the correct command type for C_LABEL', () => {
+            const command = 'label myLabel';
+            const result = commandType(command);
+            expect(result).toBe('C_LABEL');
+        });
+
+        it('return the correct command type for C_GOTO', () => {
+            const command = 'goto myLabel';
+            const result = commandType(command);
+            expect(result).toBe('C_GOTO');
+        });
+
+        it('return the correct command type for C_IF', () => {
+            const command = 'if-goto myLabel';
+            const result = commandType(command);
+            expect(result).toBe('C_IF');
+        });
+
+        it('return the correct command type for C_FUNCTION', () => {
+            const command = 'function MyFunction 2';
+            const result = commandType(command);
+            expect(result).toBe('C_FUNCTION');
+        });
+
+        it('return the correct command type for C_RETURN', () => {
+            const command = 'return';
+            const result = commandType(command);
+            expect(result).toBe('C_RETURN');
+        });
+
+        it('return the correct command type for C_CALL', () => {
+            const command = 'call MyFunction 2';
+            const result = commandType(command);
+            expect(result).toBe('C_CALL');
+        });
     });
 });
