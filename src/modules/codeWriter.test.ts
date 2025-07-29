@@ -1,52 +1,69 @@
-import { readFile, unlink } from "fs";
+import { readFileSync, unlink } from "fs";
 import { createStream, writePushPop } from "./codeWriter";
 import { randomUUID } from "crypto";
 
 describe('CodeWriter', () => {
 
     describe('createStream', () => {
-
         it('create a write stream with the provided file name', () => {
-            // mock file
-            const mockFileName = `testFile-${randomUUID().toString().replace(/-/g, '')}.txt`;
-            vi.spyOn(process, 'argv', 'get').mockReturnValue(['node', 'script.js', mockFileName]);
-            const stream = createStream();
-            expect(stream.path).toBe(mockFileName);
+            const fileName = `testFile-${randomUUID().toString().replace(/-/g, '')}.txt`;
+            const stream = createStream(fileName);
+            expect(stream.path).toBe(fileName);
 
-            // remove created file
-            stream.end();
-            stream.on('close', () => {
-                unlink(mockFileName, (err) => {
-                    if (err) throw err;
+            // Clean up the created file after the test
+            stream.end(() => {
+                unlink(fileName, (err) => {
+                    if (err) {
+                        console.error(`Error deleting file: ${fileName}`, err);
+                    }
                 });
             });
         });
     });
 
     describe('writePushPop', () => {
-        it('writes the correct assembly code to the stream, for a given push/pop operation', () => {
+        it('writes the correct assembly code to the stream, for a given push operation', async () => {
             // mock file
-            const mockFileName = `testFile-${randomUUID().toString().replace(/-/g, '')}.txt`;
-            vi.spyOn(process, 'argv', 'get').mockReturnValue(['node', 'script.js', mockFileName]);
-            const stream = createStream();
+            const fileName = `testFile-${randomUUID().toString().replace(/-/g, '')}.txt`;
+            const stream = createStream(fileName);
 
             writePushPop(stream, 'push', 'local', 2);
 
-            stream.end();
+            await new Promise<void>(resolve => {
+                stream.on('finish', () => {
+                    resolve();
+                });
+                stream.end();
+            });
 
             // check if the file was created and contains the expected content
-            stream.on('close', () => {
-                readFile(mockFileName, 'utf8', (err, data) => {
-                    if (err) throw err;
+            const data = readFileSync(stream.path, 'utf8');
+            // Here you would check the content of the file
+            expect(data).toBe(`// push local 2
+@LCL
+D=M
+@2
+A=D+A
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+`);
 
-                    // Here you would check the content of the file
-
-                    // clean up the file after test
-                    unlink(mockFileName, (err) => {
-                        if (err) throw err;
-                    });
+            // Clean up the created file after the test
+            stream.end(() => {
+                unlink(fileName, (err) => {
+                    if (err) {
+                        console.error(`Error deleting file: ${fileName}`, err);
+                    }
                 });
             });
+        });
+
+        it('writes the correct assembly code to the stream, for a given pop operation', () => {
+            // TODO
         });
     });
 });

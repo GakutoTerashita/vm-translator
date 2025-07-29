@@ -1,12 +1,6 @@
 import { createWriteStream, WriteStream } from "fs";
 
-export const createStream = (): WriteStream => {
-    const fileName = process.argv[2];
-
-    if (!fileName) {
-        throw new Error("File name must be provided as a command line argument.");
-    }
-
+export const createStream = (fileName: string): WriteStream => {
     const stream = createWriteStream(fileName, 'utf8');
     return stream;
 };
@@ -17,5 +11,37 @@ export const writePushPop = (
     segment: string,
     index: number
 ): void => {
+    const segCodeMap: Record<string, string> = {
+        'argument': 'ARG',
+        'local': 'LCL',
+        'this': 'THIS',
+        'that': 'THAT',
+    };
 
+    if (command !== 'push' && command !== 'pop') {
+        throw new Error("Command must be 'push' or 'pop'.");
+    }
+
+    if (command === 'push') {
+        const segmentCode = segCodeMap[segment];
+        if (!segmentCode) {
+            throw new Error(`Invalid segment: ${segment}`);
+        }
+
+        stream.write(`// push ${segment} ${index}\n`);
+        stream.write(`@${segmentCode}\n`);
+        stream.write(`D=M\n`);
+        stream.write(`@${index}\n`);
+        stream.write(`A=D+A\n`);
+        stream.write(`D=M\n`);
+        stream.write(`@SP\n`);
+        stream.write(`A=M\n`);
+        stream.write(`M=D\n`);
+        stream.write(`@SP\n`);
+        stream.write(`M=M+1\n`);
+    }
+
+    if (command === 'pop') {
+        throw new Error("Pop operation is not yet implemented.");
+    }
 };
