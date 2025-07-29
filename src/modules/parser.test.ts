@@ -64,7 +64,7 @@ describe('Parser', () => {
     });
 
     describe('commandType', () => {
-        it('should return the correct command type for C_ARITHMETIC', () => {
+        it('return the correct command type for C_ARITHMETIC', () => {
             const testCommands: [string, string][] = [
                 ['add', 'C_ARITHMETIC'],
                 ['sub', 'C_ARITHMETIC'],
@@ -83,7 +83,7 @@ describe('Parser', () => {
             });
         });
 
-        it('should return the correct command type for C_PUSH', () => {
+        it('return the correct command type for C_PUSH', () => {
             const command = 'push constant 10';
             const result = commandType(command);
             expect(result).toBe('C_PUSH');
