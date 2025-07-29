@@ -89,6 +89,11 @@ describe('Parser', () => {
             expect(result).toBe('C_PUSH');
         });
 
+        it('return the correct command type for C_POP', () => {
+            const command = 'pop local 0';
+            const result = commandType(command);
+            expect(result).toBe('C_POP');
+        });
         // Add more tests for other command types as needed
     });
 });

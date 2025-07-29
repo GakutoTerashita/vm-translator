@@ -57,6 +57,8 @@ export const commandType = (command: string): CommandType => {
             return 'C_ARITHMETIC';
         case 'push':
             return 'C_PUSH';
+        case 'pop':
+            return 'C_POP';
         default:
             throw new Error(`Unknown command type: ${cmd}`);
     }
