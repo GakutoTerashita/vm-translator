@@ -1,6 +1,7 @@
-import { readFileSync, unlink } from "fs";
+import { unlink } from "fs";
 import { createStream, writePushPop } from "./codeWriter";
 import { randomUUID } from "crypto";
+import { readFile } from "fs/promises";
 
 describe('CodeWriter', () => {
 
@@ -37,7 +38,7 @@ describe('CodeWriter', () => {
             });
 
             // check if the file was created and contains the expected content
-            const data = readFileSync(stream.path, 'utf8');
+            const data = await readFile(stream.path, 'utf8');
             // Here you would check the content of the file
             expect(data).toBe(`// push local 2
 @LCL
