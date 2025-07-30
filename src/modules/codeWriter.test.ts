@@ -3,11 +3,24 @@ import { createStream, writePushPop } from "./codeWriter";
 import { randomUUID } from "crypto";
 import { readFile } from "fs/promises";
 
+const streamEndAsync = (stream: NodeJS.WritableStream): Promise<void> => {
+    return new Promise(resolve => {
+        stream.on('finish', () => {
+            resolve();
+        });
+        stream.end();
+    });
+};
+
+const genTestOutFileName = (): string => (
+    `testFile-${randomUUID().toString().replace(/-/g, '')}.txt`
+);
+
 describe('CodeWriter', () => {
 
     describe('createStream', () => {
         it('create a write stream with the provided file name', () => {
-            const fileName = `testFile-${randomUUID().toString().replace(/-/g, '')}.txt`;
+            const fileName = genTestOutFileName();
             const stream = createStream(fileName);
             expect(stream.path).toBe(fileName);
 
@@ -25,17 +38,12 @@ describe('CodeWriter', () => {
     describe('writePushPop', () => {
         it('writes the correct assembly code to the stream, for a given push operation', async () => {
             // mock file
-            const fileName = `testFile-${randomUUID().toString().replace(/-/g, '')}.txt`;
+            const fileName = genTestOutFileName();
             const stream = createStream(fileName);
 
             writePushPop(stream, 'push', 'local', 2);
 
-            await new Promise<void>(resolve => {
-                stream.on('finish', () => {
-                    resolve();
-                });
-                stream.end();
-            });
+            await streamEndAsync(stream);
 
             // check if the file was created and contains the expected content
             const data = await readFile(stream.path, 'utf8');
@@ -63,8 +71,27 @@ M=M+1
             });
         });
 
-        it('writes the correct assembly code to the stream, for a given pop operation', () => {
-            // TODO
+        it('writes the correct assembly code to the stream, for a given pop operation', async () => {
+            // mock file
+            const fileName = genTestOutFileName();
+            const stream = createStream(fileName);
+
+            writePushPop(stream, 'pop', 'argument', 3);
+
+            await streamEndAsync(stream);
+
+            // check if the file was created and contains the expected content
+            const data = await readFile(stream.path, 'utf8');
+            // Here you would check the content of the file
+            expect(data).toBe(`// pop argument 3
+@SP
+A=M
+D=M
+@ARG
+D=M
+@3
+A=D+A
+`);
         });
     });
 });
