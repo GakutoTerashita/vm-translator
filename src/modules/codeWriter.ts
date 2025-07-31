@@ -55,3 +55,61 @@ export const writePushPop = (
         stream.write(`M=M-1\n`);
     }
 };
+
+export const genPush = (command: string, segment: string, index: number): string[] => {
+    const output: string[] = [];
+    const segCodeMap: Record<string, string> = {
+        'argument': 'ARG',
+        'local': 'LCL',
+        'this': 'THIS',
+        'that': 'THAT',
+    };
+
+    const segmentCode = segCodeMap[segment];
+    if (!segmentCode) {
+        throw new Error(`Invalid segment: ${segment}`);
+    }
+
+    output.push(`// push ${segment} ${index}`);
+    output.push(`@${segmentCode}`);
+    output.push('D=M');
+    output.push(`@${index}`);
+    output.push('A=D+A');
+    output.push('D=M');
+    output.push('@SP');
+    output.push('A=M');
+    output.push('M=D');
+    output.push('@SP');
+    output.push('M=M+1');
+
+    return output;
+};
+
+export const genPop = (command: string, segment: string, index: number): string[] => {
+    const output: string[] = [];
+    const segCodeMap: Record<string, string> = {
+        'argument': 'ARG',
+        'local': 'LCL',
+        'this': 'THIS',
+        'that': 'THAT',
+    };
+
+    const segmentCode = segCodeMap[segment];
+    if (!segmentCode) {
+        throw new Error(`Invalid segment: ${segment}`);
+    }
+
+    output.push(`// pop ${segment} ${index}`);
+    output.push(`@${segmentCode}`);
+    output.push('D=M');
+    output.push(`@${index}`);
+    output.push('A=D+A');
+    output.push('D=M');
+    output.push('@SP');
+    output.push('A=M');
+    output.push('M=D');
+    output.push('@SP');
+    output.push('M=M-1');
+
+    return output;
+};
