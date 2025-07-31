@@ -18,16 +18,16 @@ export const writePushPop = (
         'that': 'THAT',
     };
 
+    const segmentCode = segCodeMap[segment];
+    if (!segmentCode) {
+        throw new Error(`Invalid segment: ${segment}`);
+    }
+
     if (command !== 'push' && command !== 'pop') {
         throw new Error("Command must be 'push' or 'pop'.");
     }
 
     if (command === 'push') {
-        const segmentCode = segCodeMap[segment];
-        if (!segmentCode) {
-            throw new Error(`Invalid segment: ${segment}`);
-        }
-
         stream.write(`// push ${segment} ${index}\n`);
         stream.write(`@${segmentCode}\n`);
         stream.write(`D=M\n`);
@@ -42,6 +42,16 @@ export const writePushPop = (
     }
 
     if (command === 'pop') {
-        throw new Error("Pop operation is not yet implemented.");
+        stream.write(`// pop ${segment} ${index}\n`);
+        stream.write(`@${segmentCode}\n`);
+        stream.write(`D=M\n`);
+        stream.write(`@${index}\n`);
+        stream.write(`A=D+A\n`);
+        stream.write(`D=M\n`);
+        stream.write(`@SP\n`);
+        stream.write(`A=M\n`);
+        stream.write(`M=D\n`);
+        stream.write(`@SP\n`);
+        stream.write(`M=M-1\n`);
     }
 };

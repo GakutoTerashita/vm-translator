@@ -84,14 +84,26 @@ M=M+1
             const data = await readFile(stream.path, 'utf8');
             // Here you would check the content of the file
             expect(data).toBe(`// pop argument 3
-@SP
-A=M
-D=M
 @ARG
 D=M
 @3
 A=D+A
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M-1
 `);
+
+            // Clean up the created file after the test
+            stream.end(() => {
+                unlink(fileName, (err) => {
+                    if (err) {
+                        console.error(`Error deleting file: ${fileName}`, err);
+                    }
+                });
+            });
         });
     });
 });
