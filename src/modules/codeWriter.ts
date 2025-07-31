@@ -84,6 +84,20 @@ export const genPop = (command: string, segment: string, index: number): string[
     return output;
 };
 
+export const genArithmetic = (command: string): string[] => {
+    const output: string[] = [];
+    output.push(`// ${command}`);
+    output.push('@SP');
+    output.push('AM=M-1');
+    output.push('D=M');
+    output.push('@SP');
+    output.push('AM=M-1');
+    output.push('M=D+M');
+    output.push('@SP');
+    output.push('M=M+1');
+    return output;
+};
+
 export const write = (stream: WriteStream, data: string[]): void => {
     data.forEach(line => {
         stream.write(`${line}\n`);

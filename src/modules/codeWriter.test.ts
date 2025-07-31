@@ -1,5 +1,11 @@
 import { readFileSync, unlink } from "fs";
-import { createStream, write, genPush, genPop } from "./codeWriter";
+import {
+    createStream,
+    write,
+    genPush,
+    genPop,
+    genArithmetic
+} from "./codeWriter";
 import { randomUUID } from "crypto";
 
 const streamEndAsync = (stream: NodeJS.WritableStream): Promise<void> => {
@@ -78,6 +84,26 @@ describe('CodeWriter', () => {
             ]);
         });
 
+    });
+
+    describe('genArithmetic', () => {
+        describe('Add', () => {
+            it('generates assembly code', () => {
+                const data = genArithmetic('add');
+
+                expect(data).toEqual([
+                    "// add",
+                    "@SP",
+                    "AM=M-1",
+                    "D=M",
+                    "@SP",
+                    "AM=M-1",
+                    "M=D+M",
+                    "@SP",
+                    "M=M+1"
+                ]);
+            });
+        });
     });
 
     describe('write', () => {
