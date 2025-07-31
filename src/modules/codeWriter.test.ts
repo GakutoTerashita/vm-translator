@@ -18,6 +18,7 @@ const genTestOutFileName = (): string => (
 describe('CodeWriter', () => {
 
     describe('createStream', () => {
+
         it('create a write stream with the provided file name', () => {
             const fileName = genTestOutFileName();
             const stream = createStream(fileName);
@@ -32,9 +33,11 @@ describe('CodeWriter', () => {
                 });
             });
         });
+
     });
 
     describe('genPush', () => {
+
         it('generates a correct assembly code for a given push operation', async () => {
             const data = genPush('push', 'local', 2);
 
@@ -52,9 +55,11 @@ describe('CodeWriter', () => {
                 "M=M+1"
             ]);
         });
+
     });
 
     describe('genPop', () => {
+
         it('generates a correct assembly code for a given pop operation', async () => {
             const data = genPop('pop', 'argument', 3);
 
@@ -72,5 +77,43 @@ describe('CodeWriter', () => {
                 "M=M-1"
             ]);
         });
+
     });
+
+    describe('write', () => {
+
+        it('writes provided array of strings to the stream', async () => {
+            const fileName = genTestOutFileName();
+            const stream = createStream(fileName);
+            const data = [
+                "// push local 2",
+                "@LCL",
+                "D=M",
+                "@2",
+                "A=D+A",
+                "D=M",
+                "@SP",
+                "A=M",
+                "M=D",
+                "@SP",
+                "M=M+1"
+            ];
+            write(stream, data);
+            await streamEndAsync(stream);
+
+            const writtenData = readFileSync(fileName, 'utf-8')
+                .split('\n')
+                .filter(line => line.trim() !== '');
+            expect(writtenData).toEqual(data);
+
+            // Clean up the created file after the test
+            unlink(fileName, (err) => {
+                if (err) {
+                    console.error(`Error deleting file: ${fileName}`, err);
+                }
+            });
+        });
+
+    });
+
 });
