@@ -113,3 +113,9 @@ export const genPop = (command: string, segment: string, index: number): string[
 
     return output;
 };
+
+export const write = (stream: WriteStream, data: string[]): void => {
+    data.forEach(line => {
+        stream.write(`${line}\n`);
+    });
+};
