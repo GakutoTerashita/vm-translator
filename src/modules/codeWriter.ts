@@ -11,48 +11,18 @@ export const writePushPop = (
     segment: string,
     index: number
 ): void => {
-    const segCodeMap: Record<string, string> = {
-        'argument': 'ARG',
-        'local': 'LCL',
-        'this': 'THIS',
-        'that': 'THAT',
-    };
-
-    const segmentCode = segCodeMap[segment];
-    if (!segmentCode) {
-        throw new Error(`Invalid segment: ${segment}`);
-    }
-
     if (command !== 'push' && command !== 'pop') {
         throw new Error("Command must be 'push' or 'pop'.");
     }
 
     if (command === 'push') {
-        stream.write(`// push ${segment} ${index}\n`);
-        stream.write(`@${segmentCode}\n`);
-        stream.write(`D=M\n`);
-        stream.write(`@${index}\n`);
-        stream.write(`A=D+A\n`);
-        stream.write(`D=M\n`);
-        stream.write(`@SP\n`);
-        stream.write(`A=M\n`);
-        stream.write(`M=D\n`);
-        stream.write(`@SP\n`);
-        stream.write(`M=M+1\n`);
+        const code = genPush(command, segment, index);
+        write(stream, code);
     }
 
     if (command === 'pop') {
-        stream.write(`// pop ${segment} ${index}\n`);
-        stream.write(`@${segmentCode}\n`);
-        stream.write(`D=M\n`);
-        stream.write(`@${index}\n`);
-        stream.write(`A=D+A\n`);
-        stream.write(`D=M\n`);
-        stream.write(`@SP\n`);
-        stream.write(`A=M\n`);
-        stream.write(`M=D\n`);
-        stream.write(`@SP\n`);
-        stream.write(`M=M-1\n`);
+        const code = genPop(command, segment, index);
+        write(stream, code);
     }
 };
 
