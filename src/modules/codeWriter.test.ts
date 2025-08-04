@@ -62,6 +62,21 @@ describe('CodeWriter', () => {
             ]);
         });
 
+        it('assembly code for constant segment', () => {
+            const data = genPush('push', 'constant', 5);
+
+            expect(data).toEqual([
+                "// push constant 5",
+                "@5",
+                "D=A",
+                "@SP",
+                "A=M",
+                "M=D",
+                "@SP",
+                "M=M+1"
+            ]);
+        });
+
     });
 
     describe('genPop', () => {

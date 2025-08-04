@@ -54,16 +54,17 @@ export const genPush = (command: string, segment: string, index: number): string
         throw new Error("Static segment handling is not implemented yet.");
     }
 
-    if (segmentCode === 'CONSTANT') {
-        throw new Error("Constant segment handling is not implemented yet.");
-    }
-
     output.push(`// push ${segment} ${index}`);
-    output.push(`@${segmentCode}`);
-    output.push('D=M');
-    output.push(`@${index}`);
-    output.push('A=D+A');
-    output.push('D=M');
+    if (segmentCode === 'CONSTANT') {
+        output.push(`@${index}`);
+        output.push('D=A');
+    } else {
+        output.push(`@${segmentCode}`);
+        output.push('D=M');
+        output.push(`@${index}`);
+        output.push('A=D+A');
+        output.push('D=M');
+    }
     output.push('@SP');
     output.push('A=M');
     output.push('M=D');
@@ -80,10 +81,6 @@ export const genPop = (command: string, segment: string, index: number): string[
 
     if (segmentCode === 'STATIC') {
         throw new Error("Static segment handling is not implemented yet.");
-    }
-
-    if (segmentCode === 'CONSTANT') {
-        throw new Error("Constant segment handling is not implemented yet.");
     }
 
     output.push(`// pop ${segment} ${index}`);
