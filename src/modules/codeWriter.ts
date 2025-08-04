@@ -26,18 +26,36 @@ export const writePushPop = (
     }
 };
 
-export const genPush = (command: string, segment: string, index: number): string[] => {
-    const output: string[] = [];
+const resolveSegCode = (segment: string): string => {
     const segCodeMap: Record<string, string> = {
         'argument': 'ARG',
         'local': 'LCL',
         'this': 'THIS',
         'that': 'THAT',
+        'pointer': 'R3',
+        'temp': 'R5',
+        'constant': 'CONSTANT',
+        'static': 'STATIC'
     };
 
     const segmentCode = segCodeMap[segment];
+
     if (!segmentCode) {
         throw new Error(`Invalid segment: ${segment}`);
+    }
+    return segmentCode;
+};
+
+export const genPush = (command: string, segment: string, index: number): string[] => {
+    const output: string[] = [];
+
+    const segmentCode = resolveSegCode(segment);
+    if (segmentCode === 'STATIC') {
+        throw new Error("Static segment handling is not implemented yet.");
+    }
+
+    if (segmentCode === 'CONSTANT') {
+        throw new Error("Constant segment handling is not implemented yet.");
     }
 
     output.push(`// push ${segment} ${index}`);
@@ -57,16 +75,15 @@ export const genPush = (command: string, segment: string, index: number): string
 
 export const genPop = (command: string, segment: string, index: number): string[] => {
     const output: string[] = [];
-    const segCodeMap: Record<string, string> = {
-        'argument': 'ARG',
-        'local': 'LCL',
-        'this': 'THIS',
-        'that': 'THAT',
-    };
 
-    const segmentCode = segCodeMap[segment];
-    if (!segmentCode) {
-        throw new Error(`Invalid segment: ${segment}`);
+    const segmentCode = resolveSegCode(segment);
+
+    if (segmentCode === 'STATIC') {
+        throw new Error("Static segment handling is not implemented yet.");
+    }
+
+    if (segmentCode === 'CONSTANT') {
+        throw new Error("Constant segment handling is not implemented yet.");
     }
 
     output.push(`// pop ${segment} ${index}`);
