@@ -99,6 +99,11 @@ describe('CodeWriter', () => {
             ]);
         });
 
+        it('constant for pop is meaningless', () => {
+            expect(() => genPop('pop', 'constant', 5))
+                .toThrow("Pop operation on constant segment is not valid.");
+        });
+
     });
 
     describe('genArithmetic', () => {

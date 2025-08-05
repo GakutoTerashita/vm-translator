@@ -83,6 +83,10 @@ export const genPop = (command: string, segment: string, index: number): string[
         throw new Error("Static segment handling is not implemented yet.");
     }
 
+    if (segmentCode === 'CONSTANT') {
+        throw new Error("Pop operation on constant segment is not valid.");
+    }
+
     output.push(`// pop ${segment} ${index}`);
     output.push(`@${segmentCode}`);
     output.push('D=M');
