@@ -1,7 +1,12 @@
-type Parser = {
+export type Parser = {
     lines: string[];
     command: string;
 };
+
+export const createParser = (lines: string[]): Parser => ({
+    lines,
+    command: lines[0] || ''
+});
 
 export const advance = (parser: Parser): Parser => {
     if (!hasMoreLines(parser.lines)) {
@@ -28,7 +33,7 @@ export const removeComments = (lines: string[]): string[] => (
         .filter(line => line !== '')
 );
 
-type CommandType =
+export type CommandType =
     | 'C_ARITHMETIC'
     | 'C_PUSH'
     | 'C_POP'

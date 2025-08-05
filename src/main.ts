@@ -1,1 +1,3 @@
-console.log('hello');
+import { translateVmToAsm } from "./modules/vm-translator";
+
+translateVmToAsm();
