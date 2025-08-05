@@ -82,14 +82,39 @@ export const genPop = (command: string, segment: string, index: number): string[
 };
 
 export const genArithmetic = (command: string): string[] => {
+    if (command === 'add') {
+        return genAdd();
+    }
+    if (command === 'sub') {
+        return genSub();
+    }
+
+    throw new Error(`Unknown arithmetic command: ${command}`);
+};
+
+const genAdd = (): string[] => {
     const output: string[] = [];
-    output.push(`// ${command}`);
+    output.push('// add');
     output.push('@SP');
     output.push('AM=M-1');
     output.push('D=M');
     output.push('@SP');
     output.push('AM=M-1');
     output.push('M=D+M');
+    output.push('@SP');
+    output.push('M=M+1');
+    return output;
+};
+
+const genSub = (): string[] => {
+    const output: string[] = [];
+    output.push('// sub');
+    output.push('@SP');
+    output.push('AM=M-1');
+    output.push('D=M');
+    output.push('@SP');
+    output.push('AM=M-1');
+    output.push('M=M-D');
     output.push('@SP');
     output.push('M=M+1');
     return output;

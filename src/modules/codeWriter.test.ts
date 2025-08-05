@@ -124,6 +124,24 @@ describe('CodeWriter', () => {
                 ]);
             });
         });
+
+        describe('Sub', () => {
+            it('generates assembly code', () => {
+                const data = genArithmetic('sub');
+
+                expect(data).toEqual([
+                    "// sub",
+                    "@SP",
+                    "AM=M-1",
+                    "D=M",
+                    "@SP",
+                    "AM=M-1",
+                    "M=M-D",
+                    "@SP",
+                    "M=M+1"
+                ]);
+            });
+        });
     });
 
     describe('write', () => {
