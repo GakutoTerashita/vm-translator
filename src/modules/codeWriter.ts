@@ -88,6 +88,9 @@ export const genArithmetic = (command: string): string[] => {
     if (command === 'sub') {
         return genSub();
     }
+    if (command === 'neg') {
+        return genNeg();
+    }
 
     throw new Error(`Unknown arithmetic command: ${command}`);
 };
@@ -115,6 +118,17 @@ const genSub = (): string[] => {
     output.push('@SP');
     output.push('AM=M-1');
     output.push('M=M-D');
+    output.push('@SP');
+    output.push('M=M+1');
+    return output;
+};
+
+const genNeg = (): string[] => {
+    const output: string[] = [];
+    output.push('// neg');
+    output.push('@SP');
+    output.push('AM=M-1');
+    output.push('M=-M');
     output.push('@SP');
     output.push('M=M+1');
     return output;

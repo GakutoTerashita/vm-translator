@@ -142,6 +142,21 @@ describe('CodeWriter', () => {
                 ]);
             });
         });
+
+        describe('Neg', () => {
+            it('generates assembly code', () => {
+                const data = genArithmetic('neg');
+
+                expect(data).toEqual([
+                    "// neg",
+                    "@SP",
+                    "AM=M-1",
+                    "M=-M",
+                    "@SP",
+                    "M=M+1"
+                ]);
+            });
+        });
     });
 
     describe('write', () => {
