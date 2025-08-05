@@ -55,9 +55,9 @@ const processCommand = (command: string): string[] => {
 const processVmCodes = (parser: Parser, stream: WriteStream) => {
     let currentParser = parser;
     while (hasMoreLines(currentParser.lines)) {
+        currentParser = advance(currentParser);
         const asm = processCommand(currentParser.command);
         write(stream, asm);
-        currentParser = advance(currentParser);
     }
 };
 

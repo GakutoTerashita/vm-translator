@@ -5,7 +5,7 @@ export type Parser = {
 
 export const createParser = (lines: string[]): Parser => ({
     lines,
-    command: lines[0] || ''
+    command: ''
 });
 
 export const advance = (parser: Parser): Parser => {
