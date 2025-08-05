@@ -91,6 +91,9 @@ export const genArithmetic = (command: string): string[] => {
     if (command === 'neg') {
         return genNeg();
     }
+    if (command === 'eq') {
+        return genEq();
+    }
 
     throw new Error(`Unknown arithmetic command: ${command}`);
 };
@@ -129,6 +132,32 @@ const genNeg = (): string[] => {
     output.push('@SP');
     output.push('AM=M-1');
     output.push('M=-M');
+    output.push('@SP');
+    output.push('M=M+1');
+    return output;
+};
+
+const genEq = (): string[] => {
+    const output: string[] = [];
+    output.push('// eq');
+    output.push('@SP');
+    output.push('AM=M-1');
+    output.push('D=M');
+    output.push('@SP');
+    output.push('AM=M-1');
+    output.push('D=M-D');
+    output.push('@EQ_TRUE');
+    output.push('D;JEQ');
+    output.push('@SP');
+    output.push('A=M');
+    output.push('M=0'); // false
+    output.push('@END_EQ');
+    output.push('0;JMP');
+    output.push('(EQ_TRUE)');
+    output.push('@SP');
+    output.push('A=M');
+    output.push('M=-1'); // true
+    output.push('(END_EQ)');
     output.push('@SP');
     output.push('M=M+1');
     return output;

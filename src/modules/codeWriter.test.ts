@@ -157,6 +157,37 @@ describe('CodeWriter', () => {
                 ]);
             });
         });
+
+        describe('Eq', () => {
+            it('generates assembly code', () => {
+                const data = genArithmetic('eq');
+
+                expect(data).toEqual([
+                    "// eq",
+                    "@SP",
+                    "AM=M-1",
+                    "D=M",
+                    "@SP",
+                    "AM=M-1",
+                    "D=M-D",
+                    "@EQ_TRUE",
+                    "D;JEQ",
+                    "@SP",
+                    "A=M",
+                    "M=0", // false
+                    "@END_EQ",
+                    "0;JMP",
+                    "(EQ_TRUE)",
+                    "@SP",
+                    "A=M",
+                    "M=-1", // true
+                    "(END_EQ)",
+                    "@SP",
+                    "M=M+1"
+                ]);
+            });
+        });
+
     });
 
     describe('write', () => {
