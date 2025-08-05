@@ -5,27 +5,6 @@ export const createStream = (fileName: string): WriteStream => {
     return stream;
 };
 
-export const writePushPop = (
-    stream: WriteStream,
-    command: string,
-    segment: string,
-    index: number
-): void => {
-    if (command !== 'push' && command !== 'pop') {
-        throw new Error("Command must be 'push' or 'pop'.");
-    }
-
-    if (command === 'push') {
-        const code = genPush(command, segment, index);
-        write(stream, code);
-    }
-
-    if (command === 'pop') {
-        const code = genPop(command, segment, index);
-        write(stream, code);
-    }
-};
-
 const resolveSegCode = (segment: string): string => {
     const segCodeMap: Record<string, string> = {
         'argument': 'ARG',
