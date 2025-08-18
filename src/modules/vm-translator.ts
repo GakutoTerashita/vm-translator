@@ -24,23 +24,29 @@ const loadFileName = async (): Promise<[Parser, WriteStream]> => {
     return [parser, stream];
 };
 
-const processCommand = (command: string): string[] => {
+const processCommand = (command: string, labelNameGenCount: number): { asm: string[], labelNameGenCount: number } => {
     const type = commandType(command);
     switch (type) {
         case 'C_ARITHMETIC':
-            return genArithmetic(command);
+            return genArithmetic(command, labelNameGenCount);
         case 'C_PUSH':
-            return genPush(
-                command,
-                arg1(command),
-                parseInt(arg2(command))
-            );
+            return {
+                asm: genPush(
+                    command,
+                    arg1(command),
+                    parseInt(arg2(command))
+                ),
+                labelNameGenCount
+            };
         case 'C_POP':
-            return genPop(
-                command,
-                arg1(command),
-                parseInt(arg2(command))
-            );
+            return {
+                asm: genPop(
+                    command,
+                    arg1(command),
+                    parseInt(arg2(command))
+                ),
+                labelNameGenCount
+            };
         case 'C_LABEL':
         case 'C_GOTO':
         case 'C_IF':
@@ -54,9 +60,11 @@ const processCommand = (command: string): string[] => {
 
 const processVmCodes = (parser: Parser, stream: WriteStream) => {
     let currentParser = parser;
+    let labelNameGenCount = 0;
     while (hasMoreLines(currentParser.lines)) {
         currentParser = advance(currentParser);
-        const asm = processCommand(currentParser.command);
+        const { asm, labelNameGenCount: labelNameGenCountNew } = processCommand(currentParser.command, labelNameGenCount);
+        labelNameGenCount = labelNameGenCountNew;
         write(stream, asm);
     }
 };

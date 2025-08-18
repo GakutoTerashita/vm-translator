@@ -81,62 +81,72 @@ export const genPop = (command: string, segment: string, index: number): string[
     return output;
 };
 
-export const genArithmetic = (command: string): string[] => {
+export const genArithmetic = (command: string, labelNameGenCount: number): {
+    asm: string[],
+    labelNameGenCount: number
+} => {
     switch (command) {
         case 'add':
-            return genAdd();
+            return { asm: genAdd(), labelNameGenCount };
         case 'sub':
-            return genSub();
+            return { asm: genSub(), labelNameGenCount };
         case 'neg':
-            return genNeg();
+            return { asm: genNeg(), labelNameGenCount };
         case 'eq':
-            return genEq();
+            return genEq(labelNameGenCount);
         default:
             throw new Error(`Unknown arithmetic command: ${command}`);
     }
 };
 
 const genAdd = (): string[] => {
-    const output: string[] = [];
-    output.push('// add');
-    output.push('@SP');
-    output.push('AM=M-1');
-    output.push('D=M');
-    output.push('@SP');
-    output.push('AM=M-1');
-    output.push('M=D+M');
-    output.push('@SP');
-    output.push('M=M+1');
-    return output;
+    const asm: string[] = [];
+    asm.push('// add');
+    asm.push('@SP');
+    asm.push('AM=M-1');
+    asm.push('D=M');
+    asm.push('@SP');
+    asm.push('AM=M-1');
+    asm.push('M=D+M');
+    asm.push('@SP');
+    asm.push('M=M+1');
+    return asm;
 };
 
 const genSub = (): string[] => {
-    const output: string[] = [];
-    output.push('// sub');
-    output.push('@SP');
-    output.push('AM=M-1');
-    output.push('D=M');
-    output.push('@SP');
-    output.push('AM=M-1');
-    output.push('M=M-D');
-    output.push('@SP');
-    output.push('M=M+1');
-    return output;
+    const asm: string[] = [];
+    asm.push('// sub');
+    asm.push('@SP');
+    asm.push('AM=M-1');
+    asm.push('D=M');
+    asm.push('@SP');
+    asm.push('AM=M-1');
+    asm.push('M=M-D');
+    asm.push('@SP');
+    asm.push('M=M+1');
+    return asm;
 };
 
 const genNeg = (): string[] => {
-    const output: string[] = [];
-    output.push('// neg');
-    output.push('@SP');
-    output.push('AM=M-1');
-    output.push('M=-M');
-    output.push('@SP');
-    output.push('M=M+1');
-    return output;
+    const asm: string[] = [];
+    asm.push('// neg');
+    asm.push('@SP');
+    asm.push('AM=M-1');
+    asm.push('M=-M');
+    asm.push('@SP');
+    asm.push('M=M+1');
+    return asm;
 };
 
-const genEq = (): string[] => {
+const genEq = (labelNameGenCount: number): {
+    asm: string[],
+    labelNameGenCount: number
+} => {
     const output: string[] = [];
+    const labelName = [
+        `EQ_TRUE_${labelNameGenCount}`,
+        `END_EQ_${labelNameGenCount}`,
+    ];
     output.push('// eq');
     output.push('@SP');
     output.push('AM=M-1');
@@ -144,21 +154,24 @@ const genEq = (): string[] => {
     output.push('@SP');
     output.push('AM=M-1');
     output.push('D=M-D');
-    output.push('@EQ_TRUE');
+    output.push(`@${labelName[0]}`);
     output.push('D;JEQ');
     output.push('@SP');
     output.push('A=M');
     output.push('M=0'); // false
-    output.push('@END_EQ');
+    output.push(`@${labelName[1]}`);
     output.push('0;JMP');
-    output.push('(EQ_TRUE)');
+    output.push(`(${labelName[0]})`);
     output.push('@SP');
     output.push('A=M');
     output.push('M=-1'); // true
-    output.push('(END_EQ)');
+    output.push(`(${labelName[1]})`);
     output.push('@SP');
     output.push('M=M+1');
-    return output;
+    return {
+        asm: output,
+        labelNameGenCount: (labelNameGenCount + 1)
+    };
 };
 
 export const write = (stream: WriteStream, data: string[]): void => {

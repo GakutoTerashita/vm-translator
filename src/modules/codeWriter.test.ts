@@ -109,9 +109,9 @@ describe('CodeWriter', () => {
     describe('genArithmetic', () => {
         describe('Add', () => {
             it('generates assembly code', () => {
-                const data = genArithmetic('add');
+                const data = genArithmetic('add', 0);
 
-                expect(data).toEqual([
+                expect(data.asm).toEqual([
                     "// add",
                     "@SP",
                     "AM=M-1",
@@ -127,9 +127,9 @@ describe('CodeWriter', () => {
 
         describe('Sub', () => {
             it('generates assembly code', () => {
-                const data = genArithmetic('sub');
+                const data = genArithmetic('sub', 0);
 
-                expect(data).toEqual([
+                expect(data.asm).toEqual([
                     "// sub",
                     "@SP",
                     "AM=M-1",
@@ -145,9 +145,9 @@ describe('CodeWriter', () => {
 
         describe('Neg', () => {
             it('generates assembly code', () => {
-                const data = genArithmetic('neg');
+                const data = genArithmetic('neg', 0);
 
-                expect(data).toEqual([
+                expect(data.asm).toEqual([
                     "// neg",
                     "@SP",
                     "AM=M-1",
@@ -160,9 +160,9 @@ describe('CodeWriter', () => {
 
         describe('Eq', () => {
             it('generates assembly code', () => {
-                const data = genArithmetic('eq');
+                const data = genArithmetic('eq', 0);
 
-                expect(data).toEqual([
+                expect(data.asm).toEqual([
                     "// eq",
                     "@SP",
                     "AM=M-1",
@@ -170,22 +170,29 @@ describe('CodeWriter', () => {
                     "@SP",
                     "AM=M-1",
                     "D=M-D",
-                    "@EQ_TRUE",
+                    "@EQ_TRUE_0",
                     "D;JEQ",
                     "@SP",
                     "A=M",
                     "M=0", // false
-                    "@END_EQ",
+                    "@END_EQ_0",
                     "0;JMP",
-                    "(EQ_TRUE)",
+                    "(EQ_TRUE_0)",
                     "@SP",
                     "A=M",
                     "M=-1", // true
-                    "(END_EQ)",
+                    "(END_EQ_0)",
                     "@SP",
                     "M=M+1"
                 ]);
             });
+
+            it('increments labelNameGenCount for each eq command', () => {
+                const data1 = genArithmetic('eq', 0);
+                const data2 = genArithmetic('eq', data1.labelNameGenCount);
+                expect(data2.labelNameGenCount).toBe(data1.labelNameGenCount + 1);
+            });
+
         });
 
     });
