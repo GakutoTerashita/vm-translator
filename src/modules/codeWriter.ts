@@ -82,20 +82,18 @@ export const genPop = (command: string, segment: string, index: number): string[
 };
 
 export const genArithmetic = (command: string): string[] => {
-    if (command === 'add') {
-        return genAdd();
+    switch (command) {
+        case 'add':
+            return genAdd();
+        case 'sub':
+            return genSub();
+        case 'neg':
+            return genNeg();
+        case 'eq':
+            return genEq();
+        default:
+            throw new Error(`Unknown arithmetic command: ${command}`);
     }
-    if (command === 'sub') {
-        return genSub();
-    }
-    if (command === 'neg') {
-        return genNeg();
-    }
-    if (command === 'eq') {
-        return genEq();
-    }
-
-    throw new Error(`Unknown arithmetic command: ${command}`);
 };
 
 const genAdd = (): string[] => {
