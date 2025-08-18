@@ -1,9 +1,19 @@
 ## TODO
-- [ ] pass `SimpleAdd` test
-    - [ ] generated code for `push` works
-    - [ ] generated code for `add` works
+- [x] pass `SimpleAdd` test
+    - [x] generated code for `push` works
+    - [x] generated code for `add` works
 - [ ] pass `StackTest` test
     - [ ] generated codes for all arithmetic command works
+        - [x] add
+        - [x] sub
+        - [x] neg
+        - [ ] eq
+            - [ ] dupe label symbols issue
+        - [ ] gt
+        - [ ] lt
+        - [ ] and
+        - [ ] or
+        - [ ] not
 - [ ] pass `BasicTest` test
 - [ ] pass `PointerTest` test
 - [ ] pass `StaticTest` test
