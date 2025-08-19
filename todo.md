@@ -16,5 +16,12 @@
         - [x] or
         - [x] not
 - [ ] pass `BasicTest` test
+    - [x] memory segments are properly considered
+        - [x] `constant`
+        - [x] `local`
+        - [x] `argument`
+        - [x] `this`
+        - [x] `that`
+        - [x] `temp`
 - [ ] pass `PointerTest` test
 - [ ] pass `StaticTest` test
