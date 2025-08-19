@@ -61,6 +61,17 @@ const processCommand = (command: string, labelNameGenCount: number): { asm: stri
 const processVmCodes = (parser: Parser, stream: WriteStream) => {
     let currentParser = parser;
     let labelNameGenCount = 0;
+
+    write(
+        stream,
+        [
+            '@256',
+            'D=A',
+            '@SP',
+            'M=D',
+        ],
+    );
+
     while (hasMoreLines(currentParser.lines)) {
         currentParser = advance(currentParser);
         const { asm, labelNameGenCount: labelNameGenCountNew } = processCommand(currentParser.command, labelNameGenCount);

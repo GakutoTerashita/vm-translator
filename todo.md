@@ -2,7 +2,7 @@
 - [x] pass `SimpleAdd` test
     - [x] generated code for `push` works
     - [x] generated code for `add` works
-- [ ] pass `StackTest` test
+- [x] pass `StackTest` test
     - [x] code generations for all arithmetic command works
         - [x] add
         - [x] sub
