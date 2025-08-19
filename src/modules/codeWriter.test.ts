@@ -77,6 +77,51 @@ describe('CodeWriter', () => {
             ]);
         });
 
+        it('assembly code for pointer segment 0', () => {
+            const asm = genPush('push', 'pointer', 0);
+
+            expect(asm).toEqual([
+                "// push pointer 0",
+                "@3",
+                "D=M",
+                "@SP",
+                "A=M",
+                "M=D",
+                "@SP",
+                "M=M+1"
+            ]);
+        });
+
+        it('assembly code for pointer segment 1', () => {
+            const asm = genPush('push', 'pointer', 1);
+
+            expect(asm).toEqual([
+                "// push pointer 1",
+                "@4",
+                "D=M",
+                "@SP",
+                "A=M",
+                "M=D",
+                "@SP",
+                "M=M+1"
+            ]);
+        });
+
+        it('assembly code for temp segment', () => {
+            const asm = genPush('push', 'temp', 2);
+
+            expect(asm).toEqual([
+                "// push temp 2",
+                "@7",
+                "D=M",
+                "@SP",
+                "A=M",
+                "M=D",
+                "@SP",
+                "M=M+1",
+            ]);
+        });
+
     });
 
     describe('genPop', () => {
@@ -106,6 +151,51 @@ describe('CodeWriter', () => {
         it('constant for pop is meaningless', () => {
             expect(() => genPop('pop', 'constant', 5))
                 .toThrow("Pop operation on constant segment is not valid.");
+        });
+
+        it('assembly code for pointer segment 0', () => {
+            const asm = genPop('pop', 'pointer', 0);
+
+            expect(asm).toEqual([
+                "// pop pointer 0",
+                "@SP",
+                "A=M",
+                "D=M",
+                "@SP",
+                "M=M-1",
+                "@3",
+                "M=D",
+            ]);
+        });
+
+        it('assembly code for pointer segment 1', () => {
+            const asm = genPop('pop', 'pointer', 1);
+
+            expect(asm).toEqual([
+                "// pop pointer 1",
+                "@SP",
+                "A=M",
+                "D=M",
+                "@SP",
+                "M=M-1",
+                "@4",
+                "M=D",
+            ]);
+        });
+
+        it('assembly code for temp segment', () => {
+            const asm = genPop('pop', 'temp', 4);
+
+            expect(asm).toEqual([
+                "// pop temp 4",
+                "@SP",
+                "A=M",
+                "D=M",
+                "@SP",
+                "M=M-1",
+                "@9",
+                "M=D",
+            ]);
         });
 
     });
