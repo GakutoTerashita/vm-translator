@@ -93,7 +93,11 @@ export const genArithmetic = (command: string, labelNameGenCount: number): {
         case 'neg':
             return { asm: genNeg(), labelNameGenCount };
         case 'eq':
-            return genEq(labelNameGenCount);
+            return genComparisonOp(labelNameGenCount, 'eq');
+        case 'gt':
+            return genComparisonOp(labelNameGenCount, 'gt');
+        case 'lt':
+            return genComparisonOp(labelNameGenCount, 'lt');
         default:
             throw new Error(`Unknown arithmetic command: ${command}`);
     }
@@ -138,16 +142,19 @@ const genNeg = (): string[] => {
     return asm;
 };
 
-const genEq = (labelNameGenCount: number): {
+const genComparisonOp = (
+    labelNameGenCount: number,
+    op: 'eq' | 'gt' | 'lt',
+): {
     asm: string[],
     labelNameGenCount: number
 } => {
     const output: string[] = [];
     const labelName = [
-        `EQ_TRUE_${labelNameGenCount}`,
-        `END_EQ_${labelNameGenCount}`,
+        `${op.toUpperCase()}_TRUE_${labelNameGenCount}`,
+        `END_${op.toUpperCase()}_${labelNameGenCount}`,
     ];
-    output.push('// eq');
+    output.push(`// ${op}`);
     output.push('@SP');
     output.push('AM=M-1');
     output.push('D=M');
@@ -155,7 +162,7 @@ const genEq = (labelNameGenCount: number): {
     output.push('AM=M-1');
     output.push('D=M-D');
     output.push(`@${labelName[0]}`);
-    output.push('D;JEQ');
+    output.push(`D;J${op.toUpperCase()}`);
     output.push('@SP');
     output.push('A=M');
     output.push('M=0'); // false
