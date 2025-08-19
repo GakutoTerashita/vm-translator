@@ -3,7 +3,7 @@
     - [x] generated code for `push` works
     - [x] generated code for `add` works
 - [ ] pass `StackTest` test
-    - [ ] code generations for all arithmetic command works
+    - [x] code generations for all arithmetic command works
         - [x] add
         - [x] sub
         - [x] neg
@@ -12,9 +12,9 @@
             - [x] count label name generations
         - [x] gt
         - [x] lt
-        - [ ] and
-        - [ ] or
-        - [ ] not
+        - [x] and
+        - [x] or
+        - [x] not
 - [ ] pass `BasicTest` test
 - [ ] pass `PointerTest` test
 - [ ] pass `StaticTest` test
