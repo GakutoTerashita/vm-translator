@@ -3,15 +3,15 @@
     - [x] generated code for `push` works
     - [x] generated code for `add` works
 - [ ] pass `StackTest` test
-    - [ ] generated codes for all arithmetic command works
+    - [ ] generating codes for all arithmetic command works
         - [x] add
         - [x] sub
         - [x] neg
         - [x] eq
             - [x] dupe label symbols issue
             - [x] count label name generations
-        - [ ] gt
-        - [ ] lt
+        - [x] gt
+        - [x] lt
         - [ ] and
         - [ ] or
         - [ ] not
