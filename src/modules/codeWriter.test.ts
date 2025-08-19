@@ -232,6 +232,43 @@ describe('CodeWriter', () => {
 
         });
 
+        describe('Lt', () => {
+            it('generates assembly code', () => {
+                const data = genArithmetic('lt', 0);
+
+                expect(data.asm).toEqual([
+                    "// lt",
+                    "@SP",
+                    "AM=M-1",
+                    "D=M",
+                    "@SP",
+                    "AM=M-1",
+                    "D=M-D",
+                    "@LT_TRUE_0",
+                    "D;JLT",
+                    "@SP",
+                    "A=M",
+                    "M=0", // false
+                    "@END_LT_0",
+                    "0;JMP",
+                    "(LT_TRUE_0)",
+                    "@SP",
+                    "A=M",
+                    "M=-1", // true
+                    "(END_LT_0)",
+                    "@SP",
+                    "M=M+1"
+                ]);
+            });
+
+            it('increments labelNameGenCount for each lt command', () => {
+                const data1 = genArithmetic('lt', 0);
+                const data2 = genArithmetic('lt', data1.labelNameGenCount);
+                expect(data2.labelNameGenCount).toBe(data1.labelNameGenCount + 1);
+            });
+
+        });
+
     });
 
     describe('write', () => {
