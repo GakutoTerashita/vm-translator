@@ -150,7 +150,7 @@ const genComparisonOp = (
     labelNameGenCount: number
 } => {
     const output: string[] = [];
-    const labelName = [
+    const labelNames = [
         `${op.toUpperCase()}_TRUE_${labelNameGenCount}`,
         `END_${op.toUpperCase()}_${labelNameGenCount}`,
     ];
@@ -161,18 +161,18 @@ const genComparisonOp = (
     output.push('@SP');
     output.push('AM=M-1');
     output.push('D=M-D');
-    output.push(`@${labelName[0]}`);
+    output.push(`@${labelNames[0]}`);
     output.push(`D;J${op.toUpperCase()}`);
     output.push('@SP');
     output.push('A=M');
     output.push('M=0'); // false
-    output.push(`@${labelName[1]}`);
+    output.push(`@${labelNames[1]}`);
     output.push('0;JMP');
-    output.push(`(${labelName[0]})`);
+    output.push(`(${labelNames[0]})`);
     output.push('@SP');
     output.push('A=M');
     output.push('M=-1'); // true
-    output.push(`(${labelName[1]})`);
+    output.push(`(${labelNames[1]})`);
     output.push('@SP');
     output.push('M=M+1');
     return {
