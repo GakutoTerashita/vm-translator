@@ -23,6 +23,7 @@
         - [x] `this`
         - [x] `that`
         - [x] `temp`
-    - [ ] `pop` is sus
+    - [x] `pop` is sus
+    - [ ] 最初の2命令、 D レジスタの挙動が理想と違う
 - [ ] pass `PointerTest` test
 - [ ] pass `StaticTest` test
