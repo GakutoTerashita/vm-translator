@@ -3,7 +3,7 @@
     - [x] generated code for `push` works
     - [x] generated code for `add` works
 - [ ] pass `StackTest` test
-    - [ ] generating codes for all arithmetic command works
+    - [ ] code generations for all arithmetic command works
         - [x] add
         - [x] sub
         - [x] neg
