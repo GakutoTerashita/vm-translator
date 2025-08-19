@@ -25,5 +25,6 @@
         - [x] `temp`
     - [x] `pop` is sus
     - [ ] 最初の2命令、 D レジスタの挙動が理想と違う
+        - [ ] `pop` が間違ってそう
 - [ ] pass `PointerTest` test
 - [ ] pass `StaticTest` test
