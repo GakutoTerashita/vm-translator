@@ -54,7 +54,6 @@ export const genPush = (command: string, segment: string, index: number): string
             output.push(`@${index}`);
             output.push('A=D+A');
             output.push('D=M');
-            break;
     }
 
     output.push('@SP');
@@ -80,20 +79,37 @@ export const genPop = (command: string, segment: string, index: number): string[
     }
 
     output.push(`// pop ${segment} ${index}`);
-    output.push(`@${segmentCode}`);
-    output.push('D=M');
-    output.push(`@${index}`);
-    output.push('D=D+A');
-    output.push('@R13'); // R13 is allowed to be used as a temporal storage.
-    output.push('M=D');
+
+    if (segmentCode !== 'PTR' && segmentCode !== 'TEMP') {
+        output.push(`@${segmentCode}`);
+        output.push('D=M');
+        output.push(`@${index}`);
+        output.push('D=D+A');
+        output.push('@R13'); // R13 is allowed to be used as a temporal storage.
+        output.push('M=D');
+    }
+
+    // actual "popping"
     output.push('@SP');
     output.push('A=M');
     output.push('D=M');
     output.push('@SP');
     output.push('M=M-1');
-    output.push('@R13');
-    output.push('A=M');
-    output.push('M=D');
+
+    switch (segmentCode) {
+        case 'PTR':
+            output.push(`@${index + 3}`); // pointer segments start at 3
+            output.push('M=D');
+            break;
+        case 'TEMP':
+            output.push(`@${index + 5}`); // temp segments start at 5
+            output.push('M=D');
+            break;
+        default:
+            output.push('@R13');
+            output.push('A=M');
+            output.push('M=D');
+    }
 
     return output;
 };
