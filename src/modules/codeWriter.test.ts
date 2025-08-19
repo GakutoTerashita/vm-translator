@@ -269,6 +269,57 @@ describe('CodeWriter', () => {
 
         });
 
+        describe('and', () => {
+            it('generates assembly code', () => {
+                const data = genArithmetic('and', 0);
+
+                expect(data.asm).toEqual([
+                    "// and",
+                    "@SP",
+                    "AM=M-1",
+                    "D=M",
+                    "@SP",
+                    "AM=M-1",
+                    "M=D&M",
+                    "@SP",
+                    "M=M+1"
+                ]);
+            });
+        });
+
+        describe('or', () => {
+            it('generates assembly code', () => {
+                const data = genArithmetic('or', 0);
+
+                expect(data.asm).toEqual([
+                    "// or",
+                    "@SP",
+                    "AM=M-1",
+                    "D=M",
+                    "@SP",
+                    "AM=M-1",
+                    "M=D|M",
+                    "@SP",
+                    "M=M+1"
+                ]);
+            });
+        });
+
+        describe('not', () => {
+            it('generates assembly code', () => {
+                const data = genArithmetic('not', 0);
+
+                expect(data.asm).toEqual([
+                    "// not",
+                    "@SP",
+                    "AM=M-1",
+                    "M=!M",
+                    "@SP",
+                    "M=M+1"
+                ]);
+            });
+        });
+
     });
 
     describe('write', () => {

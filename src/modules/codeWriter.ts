@@ -98,6 +98,12 @@ export const genArithmetic = (command: string, labelNameGenCount: number): {
             return genComparisonOp(labelNameGenCount, 'gt');
         case 'lt':
             return genComparisonOp(labelNameGenCount, 'lt');
+        case 'and':
+            return { asm: genAnd(), labelNameGenCount };
+        case 'or':
+            return { asm: genOr(), labelNameGenCount };
+        case 'not':
+            return { asm: genNot(), labelNameGenCount };
         default:
             throw new Error(`Unknown arithmetic command: ${command}`);
     }
@@ -179,6 +185,45 @@ const genComparisonOp = (
         asm: output,
         labelNameGenCount: (labelNameGenCount + 1)
     };
+};
+
+const genAnd = (): string[] => {
+    const asm: string[] = [];
+    asm.push('// and');
+    asm.push('@SP');
+    asm.push('AM=M-1');
+    asm.push('D=M');
+    asm.push('@SP');
+    asm.push('AM=M-1');
+    asm.push('M=D&M');
+    asm.push('@SP');
+    asm.push('M=M+1');
+    return asm;
+};
+
+const genOr = (): string[] => {
+    const asm: string[] = [];
+    asm.push('// or');
+    asm.push('@SP');
+    asm.push('AM=M-1');
+    asm.push('D=M');
+    asm.push('@SP');
+    asm.push('AM=M-1');
+    asm.push('M=D|M');
+    asm.push('@SP');
+    asm.push('M=M+1');
+    return asm;
+};
+
+const genNot = (): string[] => {
+    const asm: string[] = [];
+    asm.push('// not');
+    asm.push('@SP');
+    asm.push('AM=M-1');
+    asm.push('M=!M');
+    asm.push('@SP');
+    asm.push('M=M+1');
+    return asm;
 };
 
 export const write = (stream: WriteStream, data: string[]): void => {
