@@ -7,9 +7,9 @@
         - [x] add
         - [x] sub
         - [x] neg
-        - [ ] eq
-            - [ ] dupe label symbols issue
-            - [ ] count label name generations
+        - [x] eq
+            - [x] dupe label symbols issue
+            - [x] count label name generations
         - [ ] gt
         - [ ] lt
         - [ ] and
