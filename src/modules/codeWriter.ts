@@ -11,8 +11,8 @@ const resolveSegCode = (segment: string): string => {
         'local': 'LCL',
         'this': 'THIS',
         'that': 'THAT',
-        'pointer': 'R3',
-        'temp': 'R5',
+        'pointer': 'PTR',
+        'temp': 'TEMP',
         'constant': 'CONSTANT',
         'static': 'STATIC'
     };
@@ -34,16 +34,29 @@ export const genPush = (command: string, segment: string, index: number): string
     }
 
     output.push(`// push ${segment} ${index}`);
-    if (segmentCode === 'CONSTANT') {
-        output.push(`@${index}`);
-        output.push('D=A');
-    } else {
-        output.push(`@${segmentCode}`);
-        output.push('D=M');
-        output.push(`@${index}`);
-        output.push('A=D+A');
-        output.push('D=M');
+
+    switch (segmentCode) {
+        case 'CONSTANT':
+            output.push(`@${index}`);
+            output.push('D=A');
+            break;
+        case 'PTR':
+            output.push(`@${index + 3}`); // pointer segments start at 3
+            output.push('D=M');
+            break;
+        case 'TEMP':
+            output.push(`@${index + 5}`); // temp segments start at 5
+            output.push('D=M');
+            break;
+        default:
+            output.push(`@${segmentCode}`);
+            output.push('D=M');
+            output.push(`@${index}`);
+            output.push('A=D+A');
+            output.push('D=M');
+            break;
     }
+
     output.push('@SP');
     output.push('A=M');
     output.push('M=D');
