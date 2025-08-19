@@ -23,5 +23,6 @@
         - [x] `this`
         - [x] `that`
         - [x] `temp`
+    - [ ] `pop` is sus
 - [ ] pass `PointerTest` test
 - [ ] pass `StaticTest` test
