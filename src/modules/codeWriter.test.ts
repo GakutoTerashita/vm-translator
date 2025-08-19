@@ -89,13 +89,17 @@ describe('CodeWriter', () => {
                 "@ARG",
                 "D=M",
                 "@3",
-                "A=D+A",
-                "D=M",
-                "@SP",
-                "A=M",
+                "D=D+A",
+                "@R13", // R13 is allowed to be used as a temporal storage.
                 "M=D",
                 "@SP",
-                "M=M-1"
+                "A=M",
+                "D=M",
+                "@SP",
+                "M=M-1",
+                "@R13",
+                "A=M",
+                "M=D",
             ]);
         });
 

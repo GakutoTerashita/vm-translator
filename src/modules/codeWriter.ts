@@ -70,13 +70,17 @@ export const genPop = (command: string, segment: string, index: number): string[
     output.push(`@${segmentCode}`);
     output.push('D=M');
     output.push(`@${index}`);
-    output.push('A=D+A');
-    output.push('D=M');
-    output.push('@SP');
-    output.push('A=M');
+    output.push('D=D+A');
+    output.push('@R13'); // R13 is allowed to be used as a temporal storage.
     output.push('M=D');
     output.push('@SP');
+    output.push('A=M');
+    output.push('D=M');
+    output.push('@SP');
     output.push('M=M-1');
+    output.push('@R13');
+    output.push('A=M');
+    output.push('M=D');
 
     return output;
 };
