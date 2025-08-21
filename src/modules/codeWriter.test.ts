@@ -122,6 +122,25 @@ describe('CodeWriter', () => {
             ]);
         });
 
+        it('assembly code for static segment', () => {
+            const asm = genPush(
+                'push',
+                'static',
+                3,
+                'hoge',
+            );
+
+            expect(asm).toEqual([
+                "// push static 3",
+                "@hoge.3",
+                "D=M",
+                "@SP",
+                "A=M",
+                "M=D",
+                "@SP",
+                "M=M+1"
+            ]);
+        });
     });
 
     describe('genPop', () => {
@@ -186,6 +205,24 @@ describe('CodeWriter', () => {
                 "AM=M-1",
                 "D=M",
                 "@9",
+                "M=D",
+            ]);
+        });
+
+        it('assembly code for static segment', () => {
+            const asm = genPop(
+                'pop',
+                'static',
+                5,
+                'hoge',
+            );
+
+            expect(asm).toEqual([
+                "// pop static 5",
+                "@SP",
+                "AM=M-1",
+                "D=M",
+                "@hoge.5",
                 "M=D",
             ]);
         });
