@@ -32,11 +32,7 @@ export const genPush = (
     vmFileNameWithoutExtensionAndPath?: string,
 ): string[] => {
     const output: string[] = [];
-
     const segmentCode = resolveSegCode(segment);
-    if (segmentCode === 'STATIC') {
-        throw new Error("Static segment handling is not implemented yet.");
-    }
 
     output.push(`// push ${segment} ${index}`);
 
@@ -51,6 +47,10 @@ export const genPush = (
             break;
         case 'TEMP':
             output.push(`@${index + 5}`); // temp segments start at 5
+            output.push('D=M');
+            break;
+        case 'STATIC':
+            output.push(`@${vmFileNameWithoutExtensionAndPath}.${index}`);
             output.push('D=M');
             break;
         default:
@@ -77,12 +77,7 @@ export const genPop = (
     vmFileNameWithoutExtensionAndPath?: string,
 ): string[] => {
     const output: string[] = [];
-
     const segmentCode = resolveSegCode(segment);
-
-    if (segmentCode === 'STATIC') {
-        throw new Error("Static segment handling is not implemented yet.");
-    }
 
     if (segmentCode === 'CONSTANT') {
         throw new Error("Pop operation on constant segment is not valid.");
@@ -90,7 +85,11 @@ export const genPop = (
 
     output.push(`// pop ${segment} ${index}`);
 
-    if (segmentCode !== 'PTR' && segmentCode !== 'TEMP') {
+    if (
+        segmentCode !== 'PTR' &&
+        segmentCode !== 'TEMP' &&
+        segmentCode !== 'STATIC'
+    ) {
         output.push(`@${segmentCode}`);
         output.push('D=M');
         output.push(`@${index}`);
@@ -111,6 +110,10 @@ export const genPop = (
             break;
         case 'TEMP':
             output.push(`@${index + 5}`); // temp segments start at 5
+            output.push('M=D');
+            break;
+        case 'STATIC':
+            output.push(`@${vmFileNameWithoutExtensionAndPath}.${index}`);
             output.push('M=D');
             break;
         default:
