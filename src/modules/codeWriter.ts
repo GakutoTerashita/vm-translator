@@ -25,7 +25,12 @@ const resolveSegCode = (segment: string): string => {
     return segmentCode;
 };
 
-export const genPush = (command: string, segment: string, index: number): string[] => {
+export const genPush = (
+    command: string,
+    segment: string,
+    index: number,
+    vmFileNameWithoutExtensionAndPath?: string,
+): string[] => {
     const output: string[] = [];
 
     const segmentCode = resolveSegCode(segment);
@@ -65,7 +70,12 @@ export const genPush = (command: string, segment: string, index: number): string
     return output;
 };
 
-export const genPop = (command: string, segment: string, index: number): string[] => {
+export const genPop = (
+    command: string,
+    segment: string,
+    index: number,
+    vmFileNameWithoutExtensionAndPath?: string,
+): string[] => {
     const output: string[] = [];
 
     const segmentCode = resolveSegCode(segment);

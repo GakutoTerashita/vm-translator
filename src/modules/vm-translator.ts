@@ -3,7 +3,7 @@ import { advance, arg1, arg2, breakLine, commandType, createParser, hasMoreLines
 import { createStream, genArithmetic, genPop, genPush, write } from "./codeWriter";
 import { WriteStream } from "fs";
 
-const loadFileName = async (): Promise<[Parser, WriteStream]> => {
+const loadFileName = async (): Promise<[Parser, WriteStream, string]> => {
     const fileName: string | undefined = process.argv[2];
 
     if (!fileName) {
@@ -20,11 +20,19 @@ const loadFileName = async (): Promise<[Parser, WriteStream]> => {
     const vmLines = removeComments(breakLine(vmRaw));
     const parser = createParser(vmLines);
     const stream = createStream(fileName.replace('.vm', '.asm'));
+    const fileNameWithoutExtensionAndPath = fileName.split('/').pop()?.replace('.vm', '') || '';
 
-    return [parser, stream];
+    return [parser, stream, fileNameWithoutExtensionAndPath];
 };
 
-const processCommand = (command: string, labelNameGenCount: number): { asm: string[], labelNameGenCount: number } => {
+const processCommand = (
+    command: string,
+    labelNameGenCount: number,
+    vmFileNameWithoutExtensionAndPath?: string
+): {
+    asm: string[],
+    labelNameGenCount: number
+} => {
     const type = commandType(command);
     switch (type) {
         case 'C_ARITHMETIC':
@@ -34,7 +42,8 @@ const processCommand = (command: string, labelNameGenCount: number): { asm: stri
                 asm: genPush(
                     command,
                     arg1(command),
-                    parseInt(arg2(command))
+                    parseInt(arg2(command)),
+                    vmFileNameWithoutExtensionAndPath,
                 ),
                 labelNameGenCount
             };
@@ -43,7 +52,8 @@ const processCommand = (command: string, labelNameGenCount: number): { asm: stri
                 asm: genPop(
                     command,
                     arg1(command),
-                    parseInt(arg2(command))
+                    parseInt(arg2(command)),
+                    vmFileNameWithoutExtensionAndPath,
                 ),
                 labelNameGenCount
             };
@@ -58,23 +68,32 @@ const processCommand = (command: string, labelNameGenCount: number): { asm: stri
     }
 }
 
-const processVmCodes = (parser: Parser, stream: WriteStream) => {
+const processVmCodes = (parser: Parser, stream: WriteStream, fileNameWithoutExtensionAndPath: string) => {
     let currentParser = parser;
     let labelNameGenCount = 0;
 
     while (hasMoreLines(currentParser.lines)) {
         currentParser = advance(currentParser);
-        const { asm, labelNameGenCount: labelNameGenCountNew } = processCommand(currentParser.command, labelNameGenCount);
+
+        const {
+            asm,
+            labelNameGenCount: labelNameGenCountNew
+        } = processCommand(
+            currentParser.command,
+            labelNameGenCount,
+            fileNameWithoutExtensionAndPath
+        );
+
         labelNameGenCount = labelNameGenCountNew;
         write(stream, asm);
     }
 };
 
 export const translateVmToAsm = async () => {
-    const [parser, stream] = await loadFileName();
+    const [parser, stream, fileNameWithoutExtensionAndPath] = await loadFileName();
 
     try {
-        processVmCodes(parser, stream);
+        processVmCodes(parser, stream, fileNameWithoutExtensionAndPath);
     } catch (error) {
         console.error('Error during translation:', error);
         stream.end();
