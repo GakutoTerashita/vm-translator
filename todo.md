@@ -26,5 +26,5 @@
     - [x] `pop` is sus
     - [x] 最初の2命令、 D レジスタの挙動が理想と違う
         - [x] `pop` が間違ってそう
-- [ ] pass `PointerTest` test
+- [x] pass `PointerTest` test
 - [ ] pass `StaticTest` test
