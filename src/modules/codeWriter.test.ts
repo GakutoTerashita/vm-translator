@@ -138,10 +138,8 @@ describe('CodeWriter', () => {
                 "@R13", // R13 is allowed to be used as a temporal storage.
                 "M=D",
                 "@SP",
-                "A=M",
+                "AM=M-1",
                 "D=M",
-                "@SP",
-                "M=M-1",
                 "@R13",
                 "A=M",
                 "M=D",
@@ -159,10 +157,8 @@ describe('CodeWriter', () => {
             expect(asm).toEqual([
                 "// pop pointer 0",
                 "@SP",
-                "A=M",
+                "AM=M-1",
                 "D=M",
-                "@SP",
-                "M=M-1",
                 "@3",
                 "M=D",
             ]);
@@ -174,10 +170,8 @@ describe('CodeWriter', () => {
             expect(asm).toEqual([
                 "// pop pointer 1",
                 "@SP",
-                "A=M",
+                "AM=M-1",
                 "D=M",
-                "@SP",
-                "M=M-1",
                 "@4",
                 "M=D",
             ]);
@@ -189,10 +183,8 @@ describe('CodeWriter', () => {
             expect(asm).toEqual([
                 "// pop temp 4",
                 "@SP",
-                "A=M",
+                "AM=M-1",
                 "D=M",
-                "@SP",
-                "M=M-1",
                 "@9",
                 "M=D",
             ]);

@@ -91,10 +91,8 @@ export const genPop = (command: string, segment: string, index: number): string[
 
     // actual "popping"
     output.push('@SP');
-    output.push('A=M');
+    output.push('AM=M-1');
     output.push('D=M');
-    output.push('@SP');
-    output.push('M=M-1');
 
     switch (segmentCode) {
         case 'PTR':
