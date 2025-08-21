@@ -15,7 +15,7 @@
         - [x] and
         - [x] or
         - [x] not
-- [ ] pass `BasicTest` test
+- [x] pass `BasicTest` test
     - [x] memory segments are properly considered
         - [x] `constant`
         - [x] `local`
@@ -24,7 +24,7 @@
         - [x] `that`
         - [x] `temp`
     - [x] `pop` is sus
-    - [ ] 最初の2命令、 D レジスタの挙動が理想と違う
-        - [ ] `pop` が間違ってそう
+    - [x] 最初の2命令、 D レジスタの挙動が理想と違う
+        - [x] `pop` が間違ってそう
 - [ ] pass `PointerTest` test
 - [ ] pass `StaticTest` test
