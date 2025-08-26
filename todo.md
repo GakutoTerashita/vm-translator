@@ -29,8 +29,15 @@
 - [x] pass `PointerTest` test
 - [x] pass `StaticTest` test
 - [ ] pass `BasicLoop` test
+    - [ ] `label`
+    - [ ] `if`
+    - [ ] `if-goto`
 - [ ] pass `FibonacciSeries` test
 - [ ] pass `SimpleFunction` test
+    - `function`
+    - `return`
 - [ ] implement bootstrap code generation
+- [ ] `call`
 - [ ] pass `FibonacciElement` test
+    - [ ] process whole directory
 - [ ] pass `StaticsTest` test
