@@ -29,8 +29,8 @@ export const genPush = (
     segment: string,
     index: number,
     vmFileNameWithoutExtensionAndPath?: string,
-): string[] => {
-    const output: string[] = [];
+): Array<string> => {
+    const output: Array<string> = [];
     const segmentCode = resolveSegCode(segment);
 
     output.push(`// push ${segment} ${index}`);
@@ -73,8 +73,8 @@ export const genPop = (
     segment: string,
     index: number,
     vmFileNameWithoutExtensionAndPath?: string,
-): string[] => {
-    const output: string[] = [];
+): Array<string> => {
+    const output: Array<string> = [];
     const segmentCode = resolveSegCode(segment);
 
     if (segmentCode === 'CONSTANT') {
@@ -124,7 +124,7 @@ export const genPop = (
 };
 
 export const genArithmetic = (command: string, labelNameGenCount: number): {
-    asm: string[],
+    asm: Array<string>,
     labelNameGenCount: number
 } => {
     switch (command) {
@@ -151,8 +151,8 @@ export const genArithmetic = (command: string, labelNameGenCount: number): {
     }
 };
 
-const genAdd = (): string[] => {
-    const asm: string[] = [];
+const genAdd = (): Array<string> => {
+    const asm: Array<string> = [];
     asm.push('// add');
     asm.push('@SP');
     asm.push('AM=M-1');
@@ -165,8 +165,8 @@ const genAdd = (): string[] => {
     return asm;
 };
 
-const genSub = (): string[] => {
-    const asm: string[] = [];
+const genSub = (): Array<string> => {
+    const asm: Array<string> = [];
     asm.push('// sub');
     asm.push('@SP');
     asm.push('AM=M-1');
@@ -179,8 +179,8 @@ const genSub = (): string[] => {
     return asm;
 };
 
-const genNeg = (): string[] => {
-    const asm: string[] = [];
+const genNeg = (): Array<string> => {
+    const asm: Array<string> = [];
     asm.push('// neg');
     asm.push('@SP');
     asm.push('AM=M-1');
@@ -194,10 +194,10 @@ const genComparisonOp = (
     labelNameGenCount: number,
     op: 'eq' | 'gt' | 'lt',
 ): {
-    asm: string[],
+    asm: Array<string>,
     labelNameGenCount: number
 } => {
-    const output: string[] = [];
+    const output: Array<string> = [];
     const labelNames = [
         `${op.toUpperCase()}_TRUE_${labelNameGenCount}`,
         `END_${op.toUpperCase()}_${labelNameGenCount}`,
@@ -229,8 +229,8 @@ const genComparisonOp = (
     };
 };
 
-const genAnd = (): string[] => {
-    const asm: string[] = [];
+const genAnd = (): Array<string> => {
+    const asm: Array<string> = [];
     asm.push('// and');
     asm.push('@SP');
     asm.push('AM=M-1');
@@ -243,8 +243,8 @@ const genAnd = (): string[] => {
     return asm;
 };
 
-const genOr = (): string[] => {
-    const asm: string[] = [];
+const genOr = (): Array<string> => {
+    const asm: Array<string> = [];
     asm.push('// or');
     asm.push('@SP');
     asm.push('AM=M-1');
@@ -257,8 +257,8 @@ const genOr = (): string[] => {
     return asm;
 };
 
-const genNot = (): string[] => {
-    const asm: string[] = [];
+const genNot = (): Array<string> => {
+    const asm: Array<string> = [];
     asm.push('// not');
     asm.push('@SP');
     asm.push('AM=M-1');
@@ -268,16 +268,16 @@ const genNot = (): string[] => {
     return asm;
 };
 
-export const genLabel = (labelName: string): string[] => {
-    const asm: string[] = [];
+export const genLabel = (labelName: string): Array<string> => {
+    const asm: Array<string> = [];
     const label = labelName.toUpperCase();
     asm.push(`// label ${label}`);
     asm.push(`(${label})`);
     return asm;
 };
 
-export const genGoto = (labelName: string): string[] => {
-    const asm: string[] = [];
+export const genGoto = (labelName: string): Array<string> => {
+    const asm: Array<string> = [];
     const label = labelName.toUpperCase();
     asm.push(`// goto ${label}`);
     asm.push(`@${label}`);
