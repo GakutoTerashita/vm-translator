@@ -268,9 +268,20 @@ const genNot = (): string[] => {
     return asm;
 };
 
-export const genLabel = (name: string): string[] => {
+export const genLabel = (labelName: string): string[] => {
     const asm: string[] = [];
-    asm.push(`(${name.toUpperCase()})`);
+    const label = labelName.toUpperCase();
+    asm.push(`// label ${label}`);
+    asm.push(`(${label})`);
+    return asm;
+};
+
+export const genGoto = (labelName: string): string[] => {
+    const asm: string[] = [];
+    const label = labelName.toUpperCase();
+    asm.push(`// goto ${label}`);
+    asm.push(`@${label}`);
+    asm.push('0;JMP');
     return asm;
 };
 

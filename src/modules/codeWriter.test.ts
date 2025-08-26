@@ -5,7 +5,8 @@ import {
     genPush,
     genPop,
     genArithmetic,
-    genLabel
+    genLabel,
+    genGoto
 } from "./codeWriter";
 import { randomUUID } from "crypto";
 
@@ -445,10 +446,22 @@ describe('CodeWriter', () => {
     });
 
     describe('genLabel', () => {
-        it('generates a label to asm', () => {
+        it('generates asm of a label definition', () => {
             const asm = genLabel('MY_LABEL');
             expect(asm).toEqual([
+                '// label MY_LABEL',
                 '(MY_LABEL)'
+            ]);
+        });
+    });
+
+    describe('genGoto', () => {
+        it('generates asm of jump', () => {
+            const asm = genGoto('MY_LABEL');
+            expect(asm).toEqual([
+                "// goto MY_LABEL",
+                "@MY_LABEL",
+                "0;JMP",
             ]);
         });
     });
