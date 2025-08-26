@@ -285,7 +285,19 @@ export const genGoto = (labelName: string): string[] => {
     return asm;
 };
 
-export const write = (stream: WriteStream, data: string[]): void => {
+export const genIf = (labelName: string): Array<string> => {
+    const asm: Array<string> = [];
+    const label = labelName.toUpperCase();
+    asm.push(`// if-goto ${label}`);
+    asm.push('@SP');
+    asm.push('AM=M-1');
+    asm.push('D=M');
+    asm.push(`@${label}`);
+    asm.push('D;JNE');
+    return asm;
+};
+
+export const write = (stream: WriteStream, data: Array<string>): void => {
     data.forEach(line => {
         stream.write(`${line}\n`);
     });

@@ -6,7 +6,8 @@ import {
     genPop,
     genArithmetic,
     genLabel,
-    genGoto
+    genGoto,
+    genIf
 } from "./codeWriter";
 import { randomUUID } from "crypto";
 
@@ -462,6 +463,20 @@ describe('CodeWriter', () => {
                 "// goto MY_LABEL",
                 "@MY_LABEL",
                 "0;JMP",
+            ]);
+        });
+    });
+
+    describe('genIf', () => {
+        it('generates asm of conditional jump', () => {
+            const asm = genIf('MY_LABEL');
+            expect(asm).toEqual([
+                "// if-goto MY_LABEL",
+                "@SP",
+                "AM=M-1",
+                "D=M",
+                "@MY_LABEL",
+                "D;JNE"
             ]);
         });
     });
