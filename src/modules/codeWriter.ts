@@ -268,6 +268,12 @@ const genNot = (): string[] => {
     return asm;
 };
 
+export const genLabel = (name: string): string[] => {
+    const asm: string[] = [];
+    asm.push(`(${name.toUpperCase()})`);
+    return asm;
+};
+
 export const write = (stream: WriteStream, data: string[]): void => {
     data.forEach(line => {
         stream.write(`${line}\n`);

@@ -4,7 +4,8 @@ import {
     write,
     genPush,
     genPop,
-    genArithmetic
+    genArithmetic,
+    genLabel
 } from "./codeWriter";
 import { randomUUID } from "crypto";
 
@@ -441,6 +442,15 @@ describe('CodeWriter', () => {
             });
         });
 
+    });
+
+    describe('genLabel', () => {
+        it('generates a label to asm', () => {
+            const asm = genLabel('MY_LABEL');
+            expect(asm).toEqual([
+                '(MY_LABEL)'
+            ]);
+        });
     });
 
     describe('write', () => {
