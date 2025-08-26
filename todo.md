@@ -30,7 +30,7 @@
 - [x] pass `StaticTest` test
 - [ ] pass `BasicLoop` test
     - [x] `label`
-    - [ ] `if`
+    - [ ] `goto`
     - [ ] `if-goto`
 - [ ] pass `FibonacciSeries` test
 - [ ] pass `SimpleFunction` test
