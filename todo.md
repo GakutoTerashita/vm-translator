@@ -32,7 +32,8 @@
     - [x] `label`
     - [x] `goto`
     - [x] `if-goto`
-- [ ] pass `FibonacciSeries` test
+- [x] pass `FibonacciSeries` test
+    - [x] fix comment removal
 - [ ] pass `SimpleFunction` test
     - `function`
     - `return`
