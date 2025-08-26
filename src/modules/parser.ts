@@ -31,6 +31,11 @@ export const removeComments = (lines: string[]): string[] => (
     lines
         .map(line => line.startsWith('//') ? '' : line.trim())
         .filter(line => line !== '')
+        .map(line => {
+            const beforeComment = line.split('//')[0];
+            return beforeComment ? beforeComment.trim() : '';
+        })
+        .filter(line => line !== '')
 );
 
 export type CommandType =
