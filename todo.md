@@ -31,7 +31,7 @@
 - [ ] pass `BasicLoop` test
     - [x] `label`
     - [x] `goto`
-    - [ ] `if-goto`
+    - [x] `if-goto`
 - [ ] pass `FibonacciSeries` test
 - [ ] pass `SimpleFunction` test
     - `function`
