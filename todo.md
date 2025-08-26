@@ -28,7 +28,7 @@
         - [x] `pop` が間違ってそう
 - [x] pass `PointerTest` test
 - [x] pass `StaticTest` test
-- [ ] pass `BasicLoop` test
+- [x] pass `BasicLoop` test
     - [x] `label`
     - [x] `goto`
     - [x] `if-goto`
