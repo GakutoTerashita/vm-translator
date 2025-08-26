@@ -26,7 +26,6 @@ const resolveSegCode = (segment: string): string => {
 };
 
 export const genPush = (
-    command: string,
     segment: string,
     index: number,
     vmFileNameWithoutExtensionAndPath?: string,
@@ -71,7 +70,6 @@ export const genPush = (
 };
 
 export const genPop = (
-    command: string,
     segment: string,
     index: number,
     vmFileNameWithoutExtensionAndPath?: string,

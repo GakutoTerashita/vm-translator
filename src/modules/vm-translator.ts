@@ -40,7 +40,6 @@ const processCommand = (
         case 'C_PUSH':
             return {
                 asm: genPush(
-                    command,
                     arg1(command),
                     parseInt(arg2(command)),
                     vmFileNameWithoutExtensionAndPath,
@@ -50,7 +49,6 @@ const processCommand = (
         case 'C_POP':
             return {
                 asm: genPop(
-                    command,
                     arg1(command),
                     parseInt(arg2(command)),
                     vmFileNameWithoutExtensionAndPath,

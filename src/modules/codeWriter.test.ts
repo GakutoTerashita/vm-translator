@@ -45,7 +45,7 @@ describe('CodeWriter', () => {
     describe('genPush', () => {
 
         it('generates a correct assembly code for a given push operation', async () => {
-            const data = genPush('push', 'local', 2);
+            const data = genPush('local', 2);
 
             expect(data).toEqual([
                 "// push local 2",
@@ -63,7 +63,7 @@ describe('CodeWriter', () => {
         });
 
         it('assembly code for constant segment', () => {
-            const data = genPush('push', 'constant', 5);
+            const data = genPush('constant', 5);
 
             expect(data).toEqual([
                 "// push constant 5",
@@ -78,7 +78,7 @@ describe('CodeWriter', () => {
         });
 
         it('assembly code for pointer segment 0', () => {
-            const asm = genPush('push', 'pointer', 0);
+            const asm = genPush('pointer', 0);
 
             expect(asm).toEqual([
                 "// push pointer 0",
@@ -93,7 +93,7 @@ describe('CodeWriter', () => {
         });
 
         it('assembly code for pointer segment 1', () => {
-            const asm = genPush('push', 'pointer', 1);
+            const asm = genPush('pointer', 1);
 
             expect(asm).toEqual([
                 "// push pointer 1",
@@ -108,7 +108,7 @@ describe('CodeWriter', () => {
         });
 
         it('assembly code for temp segment', () => {
-            const asm = genPush('push', 'temp', 2);
+            const asm = genPush('temp', 2);
 
             expect(asm).toEqual([
                 "// push temp 2",
@@ -124,7 +124,6 @@ describe('CodeWriter', () => {
 
         it('assembly code for static segment', () => {
             const asm = genPush(
-                'push',
                 'static',
                 3,
                 'hoge',
@@ -146,7 +145,7 @@ describe('CodeWriter', () => {
     describe('genPop', () => {
 
         it('generates a correct assembly code for a given pop operation', async () => {
-            const data = genPop('pop', 'argument', 3);
+            const data = genPop('argument', 3);
 
             expect(data).toEqual([
                 "// pop argument 3",
@@ -166,12 +165,12 @@ describe('CodeWriter', () => {
         });
 
         it('constant for pop is meaningless', () => {
-            expect(() => genPop('pop', 'constant', 5))
+            expect(() => genPop('constant', 5))
                 .toThrow("Pop operation on constant segment is not valid.");
         });
 
         it('assembly code for pointer segment 0', () => {
-            const asm = genPop('pop', 'pointer', 0);
+            const asm = genPop('pointer', 0);
 
             expect(asm).toEqual([
                 "// pop pointer 0",
@@ -184,7 +183,7 @@ describe('CodeWriter', () => {
         });
 
         it('assembly code for pointer segment 1', () => {
-            const asm = genPop('pop', 'pointer', 1);
+            const asm = genPop('pointer', 1);
 
             expect(asm).toEqual([
                 "// pop pointer 1",
@@ -197,7 +196,7 @@ describe('CodeWriter', () => {
         });
 
         it('assembly code for temp segment', () => {
-            const asm = genPop('pop', 'temp', 4);
+            const asm = genPop('temp', 4);
 
             expect(asm).toEqual([
                 "// pop temp 4",
@@ -211,7 +210,6 @@ describe('CodeWriter', () => {
 
         it('assembly code for static segment', () => {
             const asm = genPop(
-                'pop',
                 'static',
                 5,
                 'hoge',
