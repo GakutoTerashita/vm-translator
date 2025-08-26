@@ -29,7 +29,7 @@
 - [x] pass `PointerTest` test
 - [x] pass `StaticTest` test
 - [ ] pass `BasicLoop` test
-    - [ ] `label`
+    - [x] `label`
     - [ ] `if`
     - [ ] `if-goto`
 - [ ] pass `FibonacciSeries` test
