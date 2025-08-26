@@ -1,6 +1,6 @@
 import { readFile } from "fs/promises";
 import { advance, arg1, arg2, breakLine, commandType, createParser, hasMoreLines, Parser, removeComments } from "./parser";
-import { createStream, genArithmetic, genLabel, genPop, genPush, write } from "./codeWriter";
+import { createStream, genArithmetic, genGoto, genLabel, genPop, genPush, write } from "./codeWriter";
 import { WriteStream } from "fs";
 
 const loadFileName = async (): Promise<[Parser, WriteStream, string]> => {
@@ -63,6 +63,12 @@ const processCommand = (
                 labelNameGenCount
             };
         case 'C_GOTO':
+            return {
+                asm: genGoto(
+                    arg1(command)
+                ),
+                labelNameGenCount
+            };
         case 'C_IF':
         case 'C_FUNCTION':
         case 'C_RETURN':
