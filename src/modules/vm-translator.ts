@@ -1,6 +1,6 @@
 import { readFile } from "fs/promises";
 import { advance, arg1, arg2, breakLine, commandType, createParser, hasMoreLines, Parser, removeComments } from "./parser";
-import { createStream, genArithmetic, genPop, genPush, write } from "./codeWriter";
+import { createStream, genArithmetic, genLabel, genPop, genPush, write } from "./codeWriter";
 import { WriteStream } from "fs";
 
 const loadFileName = async (): Promise<[Parser, WriteStream, string]> => {
@@ -56,6 +56,12 @@ const processCommand = (
                 labelNameGenCount
             };
         case 'C_LABEL':
+            return {
+                asm: genLabel(
+                    arg1(command)
+                ),
+                labelNameGenCount
+            };
         case 'C_GOTO':
         case 'C_IF':
         case 'C_FUNCTION':
