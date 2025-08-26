@@ -29,12 +29,7 @@ export const breakLine = (line: string): string[] => (
 
 export const removeComments = (lines: string[]): string[] => (
     lines
-        .map(line => line.startsWith('//') ? '' : line.trim())
-        .filter(line => line !== '')
-        .map(line => {
-            const beforeComment = line.split('//')[0];
-            return beforeComment ? beforeComment.trim() : '';
-        })
+        .map(line => (line.split('//')[0] || '').trim())
         .filter(line => line !== '')
 );
 
