@@ -28,3 +28,9 @@
         - [x] `pop` が間違ってそう
 - [x] pass `PointerTest` test
 - [x] pass `StaticTest` test
+- [ ] pass `BasicLoop` test
+- [ ] pass `FibonacciSeries` test
+- [ ] pass `SimpleFunction` test
+- [ ] implement bootstrap code generation
+- [ ] pass `FibonacciElement` test
+- [ ] pass `StaticsTest` test
