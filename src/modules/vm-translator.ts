@@ -1,6 +1,6 @@
 import { readFile } from "fs/promises";
 import { advance, arg1, arg2, breakLine, commandType, createParser, hasMoreLines, Parser, removeComments } from "./parser";
-import { createStream, genArithmetic, genGoto, genIf, genLabel, genPop, genPush, write } from "./codeWriter";
+import { createStream, genArithmetic, genFunction, genGoto, genIf, genLabel, genPop, genPush, write } from "./codeWriter";
 import { WriteStream } from "fs";
 
 const loadFileName = async (): Promise<[Parser, WriteStream, string]> => {
@@ -77,6 +77,17 @@ const processCommand = (
                 labelNameGenCount
             };
         case 'C_FUNCTION':
+            if (!vmFileNameWithoutExtensionAndPath) {
+                throw new Error('file name is required for C_FUNCTION');
+            }
+            return {
+                asm: genFunction(
+                    vmFileNameWithoutExtensionAndPath,
+                    arg1(command),
+                    parseInt(arg2(command))
+                ),
+                labelNameGenCount,
+            };
         case 'C_RETURN':
         case 'C_CALL':
         default:
