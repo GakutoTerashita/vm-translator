@@ -301,9 +301,7 @@ export const genFunction = (fileName: string, functionName: string, nVars: numbe
     const asm: Array<string> = [];
     asm.push(`// function ${functionName} ${nVars}`);
     asm.push(`(${fileName.charAt(0).toUpperCase()}${fileName.slice(1)}.${functionName})`);
-    for (let i = 0; i < nVars; i++) {
-        asm.push(...genPush('constant', 0));
-    }
+    asm.push(...Array.from({ length: nVars }, () => genPush('constant', 0)).flat());
     return asm;
 };
 
