@@ -7,7 +7,8 @@ import {
     genArithmetic,
     genLabel,
     genGoto,
-    genIf
+    genIf,
+    genFunction,
 } from "./codeWriter";
 import { randomUUID } from "crypto";
 
@@ -477,6 +478,61 @@ describe('CodeWriter', () => {
                 "D=M",
                 "@MY_LABEL",
                 "D;JNE"
+            ]);
+        });
+    });
+
+    describe('genFunction', () => {
+        it('generates asm of function definition', () => {
+            const fileName = 'myFile';
+            const functionName = 'hoge';
+            const numLocals = 3;
+
+            const asm = genFunction(fileName, functionName, numLocals);
+
+            // (f)
+            // repeat numLocals times:
+            // push constant 0
+
+            // push constant 0
+            // "@0",
+            // "D=A",
+            // "@SP",
+            // "A=M",
+            // "M=D",
+            // "@SP",
+            // "M=M+1"
+
+            expect(asm).toEqual([
+                "// function hoge 3",
+                `(${fileName.charAt(0).toUpperCase()}${fileName.slice(1)}.${functionName})`,
+
+                "// push constant 0",
+                "@0",
+                "D=A",
+                "@SP",
+                "A=M",
+                "M=D",
+                "@SP",
+                "M=M+1",
+
+                "// push constant 0",
+                "@0",
+                "D=A",
+                "@SP",
+                "A=M",
+                "M=D",
+                "@SP",
+                "M=M+1",
+
+                "// push constant 0",
+                "@0",
+                "D=A",
+                "@SP",
+                "A=M",
+                "M=D",
+                "@SP",
+                "M=M+1",
             ]);
         });
     });

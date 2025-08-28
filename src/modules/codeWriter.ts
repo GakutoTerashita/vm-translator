@@ -297,6 +297,16 @@ export const genIf = (labelName: string): Array<string> => {
     return asm;
 };
 
+export const genFunction = (fileName: string, functionName: string, nVars: number): Array<string> => {
+    const asm: Array<string> = [];
+    asm.push(`// function ${functionName} ${nVars}`);
+    asm.push(`(${fileName.charAt(0).toUpperCase()}${fileName.slice(1)}.${functionName})`);
+    for (let i = 0; i < nVars; i++) {
+        asm.push(...genPush('constant', 0));
+    }
+    return asm;
+};
+
 export const write = (stream: WriteStream, data: Array<string>): void => {
     data.forEach(line => {
         stream.write(`${line}\n`);
