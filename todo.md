@@ -35,7 +35,7 @@
 - [x] pass `FibonacciSeries` test
     - [x] fix comment removal
 - [ ] pass `SimpleFunction` test
-    - [ ] `function`
+    - [x] `function`
     - [ ] `return`
 - [ ] implement bootstrap code generation
 - [ ] `call`
