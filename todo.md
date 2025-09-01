@@ -35,8 +35,8 @@
 - [x] pass `FibonacciSeries` test
     - [x] fix comment removal
 - [ ] pass `SimpleFunction` test
-    - `function`
-    - `return`
+    - [ ] `function`
+    - [ ] `return`
 - [ ] implement bootstrap code generation
 - [ ] `call`
 - [ ] pass `FibonacciElement` test
