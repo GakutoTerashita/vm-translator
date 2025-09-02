@@ -552,8 +552,7 @@ describe('CodeWriter', () => {
                 "D=D-1",
                 "D=D-1",
                 "D=D-1",
-                "A=D-1",
-                "D=M",
+                "D=D-1",
                 "@RETADDR",
                 "M=D",
 
@@ -610,8 +609,8 @@ describe('CodeWriter', () => {
                 "@LCL",
                 "M=D",
 
-                "// goto RETADDR",
                 "@RETADDR",
+                "A=M",
                 "0;JMP",
             ]);
         });
