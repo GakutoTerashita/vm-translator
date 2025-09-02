@@ -40,5 +40,5 @@
 - [ ] pass `FibonacciElement` test
     - [x] process whole directory
     - [x] `call`
-    - [ ] implement bootstrap code generation
+    - [x] implement bootstrap code generation
 - [ ] pass `StaticsTest` test

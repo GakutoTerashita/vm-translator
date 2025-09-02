@@ -157,6 +157,19 @@ const processVmCodes = (parser: Parser, fileNameWithoutExtensionAndPath: string)
 export const translateVmToAsm = async () => {
     const { stream, parsers } = await loadFileName();
 
+    if (parsers.length > 1) {
+        const asm: Array<string> = [
+            "// bootstrap code",
+            "@256",
+            "D=A",
+            "@SP",
+            "M=D",
+            ...genCall("Sys.init", 0).flat(),
+        ];
+
+        write(stream, asm);
+    }
+
     parsers.forEach(([parser, name]) => {
         try {
             const asm = processVmCodes(parser, name);
