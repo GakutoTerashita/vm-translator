@@ -1,6 +1,6 @@
 import { readdir, readFile } from "fs/promises";
 import { advance, arg1, arg2, breakLine, commandType, createParser, hasMoreLines, Parser, removeComments } from "./parser";
-import { createStream, genArithmetic, genFunction, genGoto, genIf, genLabel, genPop, genPush, genReturn, write } from "./codeWriter";
+import { createStream, genArithmetic, genCall, genFunction, genGoto, genIf, genLabel, genPop, genPush, genReturn, write } from "./codeWriter";
 import { WriteStream } from "fs";
 import path from "path";
 
@@ -106,7 +106,6 @@ const processCommand = (
             }
             return {
                 asm: genFunction(
-                    vmFileNameWithoutExtensionAndPath,
                     arg1(command),
                     parseInt(arg2(command))
                 ),
@@ -118,6 +117,13 @@ const processCommand = (
                 labelNameGenCount
             };
         case 'C_CALL':
+            return {
+                asm: genCall(
+                    arg1(command),
+                    parseInt(arg2(command)),
+                ),
+                labelNameGenCount
+            };
         default:
             throw new Error(`Unknown command type: ${type}`);
     }

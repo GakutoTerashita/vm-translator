@@ -297,10 +297,10 @@ export const genIf = (labelName: string): Array<string> => {
     return asm;
 };
 
-export const genFunction = (fileName: string, functionName: string, nVars: number): Array<string> => {
+export const genFunction = (functionName: string, nVars: number): Array<string> => {
     const asm: Array<string> = [];
     asm.push(`// function ${functionName} ${nVars}`);
-    asm.push(`(${fileName.charAt(0).toUpperCase()}${fileName.slice(1)}.${functionName})`);
+    asm.push(`(${functionName})`);
     asm.push(...Array.from({ length: nVars }, () => genPush('constant', 0)).flat());
     return asm;
 };
@@ -359,6 +359,66 @@ export const genReturn = (): Array<string> => {
     asm.push("0;JMP");
     return asm;
 };
+
+export const genCall = (functionName: string, nArgs: number): Array<string> => (
+    [
+        `// call ${functionName} ${nArgs}`,
+
+        "@RETADDR",
+        "D=A",
+        "@SP",
+        "A=M",
+        "M=D",
+        "@SP",
+        "M=M+1",
+
+        "@LCL",
+        "D=A",
+        "@SP",
+        "A=M",
+        "M=D",
+        "@SP",
+        "M=M+1",
+
+        "@ARG",
+        "D=A",
+        "@SP",
+        "A=M",
+        "M=D",
+        "@SP",
+        "M=M+1",
+
+        "@THIS",
+        "D=A",
+        "@SP",
+        "A=M",
+        "M=D",
+        "@SP",
+        "M=M+1",
+
+        "@THAT",
+        "D=A",
+        "@SP",
+        "A=M",
+        "M=D",
+        "@SP",
+        "M=M+1",
+
+        "@SP",
+        "D=M",
+        ...Array.from({ length: nArgs + 5 }, _ => "D=D-1").flat(),
+        "@ARG",
+        "M=D",
+        "@SP",
+        "D=M",
+        "@LCL",
+        "M=D",
+
+        `@${functionName}`,
+        "A=M",
+        "0;JMP",
+    ]
+)
 
 export const write = (stream: WriteStream, data: Array<string>): void => {
     data.forEach(line => {

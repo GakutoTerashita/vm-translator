@@ -1,2 +1,4 @@
 node_modules
 *.asm
+test/*.asm
+test/**/*.asm

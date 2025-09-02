@@ -10,6 +10,7 @@ import {
     genIf,
     genFunction,
     genReturn,
+    genCall,
 } from "./codeWriter";
 import { randomUUID } from "crypto";
 
@@ -485,11 +486,10 @@ describe('CodeWriter', () => {
 
     describe('genFunction', () => {
         it('generates asm of function definition', () => {
-            const fileName = 'myFile';
             const functionName = 'hoge';
             const numLocals = 3;
 
-            const asm = genFunction(fileName, functionName, numLocals);
+            const asm = genFunction(functionName, numLocals);
 
             // (f)
             // repeat numLocals times:
@@ -506,7 +506,7 @@ describe('CodeWriter', () => {
 
             expect(asm).toEqual([
                 "// function hoge 3",
-                `(${fileName.charAt(0).toUpperCase()}${fileName.slice(1)}.${functionName})`,
+                `(${functionName})`,
 
                 "// push constant 0",
                 "@0",
@@ -610,6 +610,72 @@ describe('CodeWriter', () => {
                 "M=D",
 
                 "@RETADDR",
+                "A=M",
+                "0;JMP",
+            ]);
+        });
+    });
+
+    describe('genCall', () => {
+        it('generates asm of call', () => {
+            const funcName = "Hoge.fuga";
+            const nArgs = 3;
+            const asm = genCall(funcName, nArgs);
+
+            expect(asm).toEqual([
+                `// call ${funcName} ${nArgs}`,
+
+                "@RETADDR",
+                "D=A",
+                "@SP",
+                "A=M",
+                "M=D",
+                "@SP",
+                "M=M+1",
+
+                "@LCL",
+                "D=A",
+                "@SP",
+                "A=M",
+                "M=D",
+                "@SP",
+                "M=M+1",
+
+                "@ARG",
+                "D=A",
+                "@SP",
+                "A=M",
+                "M=D",
+                "@SP",
+                "M=M+1",
+
+                "@THIS",
+                "D=A",
+                "@SP",
+                "A=M",
+                "M=D",
+                "@SP",
+                "M=M+1",
+
+                "@THAT",
+                "D=A",
+                "@SP",
+                "A=M",
+                "M=D",
+                "@SP",
+                "M=M+1",
+
+                "@SP",
+                "D=M",
+                ...Array.from({ length: nArgs + 5 }, _ => "D=D-1").flat(),
+                "@ARG",
+                "M=D",
+                "@SP",
+                "D=M",
+                "@LCL",
+                "M=D",
+
+                `@${funcName}`,
                 "A=M",
                 "0;JMP",
             ]);
