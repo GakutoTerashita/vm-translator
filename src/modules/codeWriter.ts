@@ -305,6 +305,60 @@ export const genFunction = (fileName: string, functionName: string, nVars: numbe
     return asm;
 };
 
+export const genReturn = (): Array<string> => {
+    const asm: Array<string> = [];
+    asm.push('// return');
+    asm.push('@LCL');
+    asm.push('D=M');
+    asm.push('@FRAME');
+    asm.push('M=D');
+    asm.push('D=D-1');
+    asm.push('D=D-1');
+    asm.push('D=D-1');
+    asm.push('D=D-1');
+    asm.push('A=D-1');
+    asm.push('D=M')
+    asm.push('@RETADDR');
+    asm.push('M=D');
+    asm.push(...genPop('argument', 0).flat());
+    asm.push('@ARG');
+    asm.push('D=M');
+    asm.push('@SP');
+    asm.push('M=D+1');
+    asm.push("@FRAME");
+    asm.push("D=M");
+    asm.push("A=D-1");
+    asm.push("D=M");
+    asm.push("@THAT");
+    asm.push("M=D");
+    asm.push("@FRAME");
+    asm.push("D=M");
+    asm.push("D=D-1");
+    asm.push("A=D-1");
+    asm.push("D=M");
+    asm.push("@THIS");
+    asm.push("M=D");
+    asm.push("@FRAME");
+    asm.push("D=M");
+    asm.push("D=D-1");
+    asm.push("D=D-1");
+    asm.push("A=D-1");
+    asm.push("D=M");
+    asm.push("@ARG");
+    asm.push("M=D");
+    asm.push("@FRAME");
+    asm.push("D=M");
+    asm.push("D=D-1");
+    asm.push("D=D-1");
+    asm.push("D=D-1");
+    asm.push("A=D-1");
+    asm.push("D=M");
+    asm.push("@LCL");
+    asm.push("M=D");
+    asm.push(...genGoto('RETADDR').flat());
+    return asm;
+};
+
 export const write = (stream: WriteStream, data: Array<string>): void => {
     data.forEach(line => {
         stream.write(`${line}\n`);

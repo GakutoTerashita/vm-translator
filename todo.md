@@ -36,7 +36,7 @@
     - [x] fix comment removal
 - [ ] pass `SimpleFunction` test
     - [x] `function`
-    - [ ] `return`
+    - [x] `return`
 - [ ] implement bootstrap code generation
 - [ ] `call`
 - [ ] pass `FibonacciElement` test

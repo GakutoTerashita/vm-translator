@@ -9,6 +9,7 @@ import {
     genGoto,
     genIf,
     genFunction,
+    genReturn,
 } from "./codeWriter";
 import { randomUUID } from "crypto";
 
@@ -533,6 +534,85 @@ describe('CodeWriter', () => {
                 "M=D",
                 "@SP",
                 "M=M+1",
+            ]);
+        });
+    });
+
+    describe('genReturn', () => {
+        it('generates asm of return', () => {
+            const asm = genReturn();
+
+            expect(asm).toEqual([
+                "// return",
+                "@LCL",
+                "D=M",
+                "@FRAME",
+                "M=D",
+                "D=D-1",
+                "D=D-1",
+                "D=D-1",
+                "D=D-1",
+                "A=D-1",
+                "D=M",
+                "@RETADDR",
+                "M=D",
+
+                "// pop argument 0",
+                "@ARG",
+                "D=M",
+                "@0",
+                "D=D+A",
+                "@R13",
+                "M=D",
+                "@SP",
+                "AM=M-1",
+                "D=M",
+                "@R13",
+                "A=M",
+                "M=D",
+
+                "@ARG",
+                "D=M",
+                "@SP",
+                "M=D+1",
+
+                "@FRAME",
+                "D=M",
+                "A=D-1",
+                "D=M",
+                "@THAT",
+                "M=D",
+
+                "@FRAME",
+                "D=M",
+                "D=D-1",
+                "A=D-1",
+                "D=M",
+                "@THIS",
+                "M=D",
+
+                "@FRAME",
+                "D=M",
+                "D=D-1",
+                "D=D-1",
+                "A=D-1",
+                "D=M",
+                "@ARG",
+                "M=D",
+
+                "@FRAME",
+                "D=M",
+                "D=D-1",
+                "D=D-1",
+                "D=D-1",
+                "A=D-1",
+                "D=M",
+                "@LCL",
+                "M=D",
+
+                "// goto RETADDR",
+                "@RETADDR",
+                "0;JMP",
             ]);
         });
     });

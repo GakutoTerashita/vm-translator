@@ -1,6 +1,6 @@
 import { readFile } from "fs/promises";
 import { advance, arg1, arg2, breakLine, commandType, createParser, hasMoreLines, Parser, removeComments } from "./parser";
-import { createStream, genArithmetic, genFunction, genGoto, genIf, genLabel, genPop, genPush, write } from "./codeWriter";
+import { createStream, genArithmetic, genFunction, genGoto, genIf, genLabel, genPop, genPush, genReturn, write } from "./codeWriter";
 import { WriteStream } from "fs";
 
 const loadFileName = async (): Promise<[Parser, WriteStream, string]> => {
@@ -89,6 +89,10 @@ const processCommand = (
                 labelNameGenCount,
             };
         case 'C_RETURN':
+            return {
+                asm: genReturn(),
+                labelNameGenCount
+            };
         case 'C_CALL':
         default:
             throw new Error(`Unknown command type: ${type}`);
