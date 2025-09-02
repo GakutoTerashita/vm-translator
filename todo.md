@@ -38,7 +38,7 @@
     - [x] `function`
     - [x] `return`
 - [ ] pass `FibonacciElement` test
-    - [ ] process whole directory
+    - [x] process whole directory
     - [ ] implement bootstrap code generation
     - [ ] `call`
 - [ ] pass `StaticsTest` test
