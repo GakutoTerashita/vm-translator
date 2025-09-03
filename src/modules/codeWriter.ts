@@ -420,8 +420,15 @@ export const genCall = (
         "@LCL",
         "M=D",
 
-        `@${functionName}`,
-        "0;JMP",
+        "@SP",
+        "D=M",
+        ...Array.from({ length: nArgs + 5 }, () => "D=D-1").flat(),
+        "@ARG",
+        "M=D",
+        "@SP",
+        "D=M",
+        "@LCL",
+        "M=D",
 
         `(${functionName}.retaddr.${labelNameGenCount})`,
     ],
