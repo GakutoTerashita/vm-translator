@@ -310,51 +310,50 @@ export const genReturn = (): Array<string> => {
     asm.push('// return');
     asm.push('@LCL');
     asm.push('D=M');
-    asm.push('@FRAME');
+    asm.push('@R13');
     asm.push('M=D');
-    asm.push('D=D-1');
-    asm.push('D=D-1');
-    asm.push('D=D-1');
-    asm.push('D=D-1');
-    asm.push('D=D-1');
-    asm.push('@retaddr');
+    asm.push('@5')
+    asm.push('D=D-A');
+    asm.push('@R14');
     asm.push('M=D');
     asm.push(...genPop('argument', 0).flat());
     asm.push('@ARG');
     asm.push('D=M');
     asm.push('@SP');
     asm.push('M=D+1');
-    asm.push("@FRAME");
+
+    asm.push("@R13");
     asm.push("D=M");
-    asm.push("A=D-1");
+    asm.push("@1")
+    asm.push("A=D-A");
     asm.push("D=M");
     asm.push("@THAT");
     asm.push("M=D");
-    asm.push("@FRAME");
+
+    asm.push("@R13");
     asm.push("D=M");
-    asm.push("D=D-1");
-    asm.push("A=D-1");
+    asm.push("@2")
+    asm.push("A=D-A");
     asm.push("D=M");
     asm.push("@THIS");
     asm.push("M=D");
-    asm.push("@FRAME");
+    asm.push("@R13");
     asm.push("D=M");
-    asm.push("D=D-1");
-    asm.push("D=D-1");
-    asm.push("A=D-1");
+
+    asm.push("@3")
+    asm.push("A=D-A");
     asm.push("D=M");
     asm.push("@ARG");
     asm.push("M=D");
-    asm.push("@FRAME");
+    asm.push("@R13");
     asm.push("D=M");
-    asm.push("D=D-1");
-    asm.push("D=D-1");
-    asm.push("D=D-1");
-    asm.push("A=D-1");
+    asm.push("@4");
+    asm.push("A=D-A");
     asm.push("D=M");
     asm.push("@LCL");
     asm.push("M=D");
-    asm.push("@retaddr");
+
+    asm.push("@R14");
     asm.push("A=M");
     asm.push("0;JMP");
     return asm;
@@ -417,7 +416,6 @@ export const genCall = (
     "M=D",
 
     `@${functionName}`,
-    "A=M",
     "0;JMP",
 
     `(${functionName.replace(/\./g, "_").toUpperCase()}_RETADDR)`,
