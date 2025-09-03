@@ -41,4 +41,5 @@
     - [x] process whole directory
     - [x] `call`
     - [x] implement bootstrap code generation
+    - [ ] fix duplicate labels
 - [ ] pass `StaticsTest` test

@@ -317,7 +317,7 @@ export const genReturn = (): Array<string> => {
     asm.push('D=D-1');
     asm.push('D=D-1');
     asm.push('D=D-1');
-    asm.push('@RETADDR');
+    asm.push('@retaddr');
     asm.push('M=D');
     asm.push(...genPop('argument', 0).flat());
     asm.push('@ARG');
@@ -354,71 +354,74 @@ export const genReturn = (): Array<string> => {
     asm.push("D=M");
     asm.push("@LCL");
     asm.push("M=D");
-    asm.push("@RETADDR");
+    asm.push("@retaddr");
     asm.push("A=M");
     asm.push("0;JMP");
     return asm;
 };
 
-export const genCall = (functionName: string, nArgs: number): Array<string> => (
-    [
-        `// call ${functionName} ${nArgs}`,
+export const genCall = (
+    functionName: string,
+    nArgs: number
+): Array<string> => ([
+    `// call ${functionName} ${nArgs}`,
 
-        "@RETADDR",
-        "D=A",
-        "@SP",
-        "A=M",
-        "M=D",
-        "@SP",
-        "M=M+1",
+    `@${functionName.replace(/\./g, "_").toUpperCase()}_RETADDR`,
+    "D=A",
+    "@SP",
+    "A=M",
+    "M=D",
+    "@SP",
+    "M=M+1",
 
-        "@LCL",
-        "D=A",
-        "@SP",
-        "A=M",
-        "M=D",
-        "@SP",
-        "M=M+1",
+    "@LCL",
+    "D=A",
+    "@SP",
+    "A=M",
+    "M=D",
+    "@SP",
+    "M=M+1",
 
-        "@ARG",
-        "D=A",
-        "@SP",
-        "A=M",
-        "M=D",
-        "@SP",
-        "M=M+1",
+    "@ARG",
+    "D=A",
+    "@SP",
+    "A=M",
+    "M=D",
+    "@SP",
+    "M=M+1",
 
-        "@THIS",
-        "D=A",
-        "@SP",
-        "A=M",
-        "M=D",
-        "@SP",
-        "M=M+1",
+    "@THIS",
+    "D=A",
+    "@SP",
+    "A=M",
+    "M=D",
+    "@SP",
+    "M=M+1",
 
-        "@THAT",
-        "D=A",
-        "@SP",
-        "A=M",
-        "M=D",
-        "@SP",
-        "M=M+1",
+    "@THAT",
+    "D=A",
+    "@SP",
+    "A=M",
+    "M=D",
+    "@SP",
+    "M=M+1",
 
-        "@SP",
-        "D=M",
-        ...Array.from({ length: nArgs + 5 }, _ => "D=D-1").flat(),
-        "@ARG",
-        "M=D",
-        "@SP",
-        "D=M",
-        "@LCL",
-        "M=D",
+    "@SP",
+    "D=M",
+    ...Array.from({ length: nArgs + 5 }, () => "D=D-1").flat(),
+    "@ARG",
+    "M=D",
+    "@SP",
+    "D=M",
+    "@LCL",
+    "M=D",
 
-        `@${functionName}`,
-        "A=M",
-        "0;JMP",
-    ]
-)
+    `@${functionName}`,
+    "A=M",
+    "0;JMP",
+
+    `(${functionName.replace(/\./g, "_").toUpperCase()}_RETADDR)`,
+])
 
 export const write = (stream: WriteStream, data: Array<string>): void => {
     data.forEach(line => {

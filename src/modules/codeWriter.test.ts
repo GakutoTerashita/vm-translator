@@ -553,7 +553,7 @@ describe('CodeWriter', () => {
                 "D=D-1",
                 "D=D-1",
                 "D=D-1",
-                "@RETADDR",
+                "@retaddr",
                 "M=D",
 
                 "// pop argument 0",
@@ -609,7 +609,7 @@ describe('CodeWriter', () => {
                 "@LCL",
                 "M=D",
 
-                "@RETADDR",
+                "@retaddr",
                 "A=M",
                 "0;JMP",
             ]);
@@ -625,7 +625,7 @@ describe('CodeWriter', () => {
             expect(asm).toEqual([
                 `// call ${funcName} ${nArgs}`,
 
-                "@RETADDR",
+                `@${funcName.replace(/\./g, "_").toUpperCase()}_RETADDR`,
                 "D=A",
                 "@SP",
                 "A=M",
@@ -667,7 +667,7 @@ describe('CodeWriter', () => {
 
                 "@SP",
                 "D=M",
-                ...Array.from({ length: nArgs + 5 }, _ => "D=D-1").flat(),
+                ...Array.from({ length: nArgs + 5 }, () => "D=D-1").flat(),
                 "@ARG",
                 "M=D",
                 "@SP",
@@ -678,6 +678,7 @@ describe('CodeWriter', () => {
                 `@${funcName}`,
                 "A=M",
                 "0;JMP",
+                `(${funcName.replace(/\./g, "_").toUpperCase()}_RETADDR)`,
             ]);
         });
     });
