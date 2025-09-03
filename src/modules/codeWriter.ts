@@ -407,7 +407,8 @@ export const genCall = (
 
     "@SP",
     "D=M",
-    ...Array.from({ length: nArgs + 5 }, () => "D=D-1").flat(),
+    `@${nArgs + 5}`,
+    'D=D-A',
     "@ARG",
     "M=D",
     "@SP",
