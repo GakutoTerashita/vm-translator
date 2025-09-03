@@ -34,7 +34,7 @@
     - [x] `if-goto`
 - [x] pass `FibonacciSeries` test
     - [x] fix comment removal
-- [ ] pass `SimpleFunction` test
+- [x] pass `SimpleFunction` test
     - [x] `function`
     - [x] `return`
 - [ ] pass `FibonacciElement` test
