@@ -117,13 +117,11 @@ const processCommand = (
                 labelNameGenCount
             };
         case 'C_CALL':
-            return {
-                asm: genCall(
-                    arg1(command),
-                    parseInt(arg2(command)),
-                ),
-                labelNameGenCount
-            };
+            return genCall(
+                labelNameGenCount,
+                arg1(command),
+                parseInt(arg2(command)),
+            );
         default:
             throw new Error(`Unknown command type: ${type}`);
     }
@@ -164,7 +162,7 @@ export const translateVmToAsm = async () => {
             "D=A",
             "@SP",
             "M=D",
-            ...genCall("Sys.init", 0).flat(),
+            ...genCall(0, "Sys.init", 0).asm.flat(),
         ];
 
         write(stream, asm);
