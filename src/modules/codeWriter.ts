@@ -365,7 +365,7 @@ export const genCall = (
 ): Array<string> => ([
     `// call ${functionName} ${nArgs}`,
 
-    `@${functionName.replace(/\./g, "_").toUpperCase()}_RETADDR`,
+    `@${functionName}.retaddr`,
     "D=A",
     "@SP",
     "A=M",
@@ -374,7 +374,7 @@ export const genCall = (
     "M=M+1",
 
     "@LCL",
-    "D=A",
+    "D=M",
     "@SP",
     "A=M",
     "M=D",
@@ -382,7 +382,7 @@ export const genCall = (
     "M=M+1",
 
     "@ARG",
-    "D=A",
+    "D=M",
     "@SP",
     "A=M",
     "M=D",
@@ -390,7 +390,7 @@ export const genCall = (
     "M=M+1",
 
     "@THIS",
-    "D=A",
+    "D=M",
     "@SP",
     "A=M",
     "M=D",
@@ -398,7 +398,7 @@ export const genCall = (
     "M=M+1",
 
     "@THAT",
-    "D=A",
+    "D=M",
     "@SP",
     "A=M",
     "M=D",
@@ -419,7 +419,7 @@ export const genCall = (
     `@${functionName}`,
     "0;JMP",
 
-    `(${functionName.replace(/\./g, "_").toUpperCase()}_RETADDR)`,
+    `(${functionName}.retaddr)`,
 ])
 
 export const write = (stream: WriteStream, data: Array<string>): void => {
