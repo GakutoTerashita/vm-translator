@@ -577,16 +577,14 @@ describe('CodeWriter', () => {
 
                 '@FRAME',
                 'D=M',
-                'A=D-1',
-                'D=M',
+                'D=D-1',
                 '@THAT',
                 'M=D',
 
                 '@FRAME',
                 'D=M',
                 'D=D-1',
-                'A=D-1',
-                'D=M',
+                'D=D-1',
                 '@THIS',
                 'M=D',
 
@@ -594,8 +592,7 @@ describe('CodeWriter', () => {
                 'D=M',
                 'D=D-1',
                 'D=D-1',
-                'A=D-1',
-                'D=M',
+                'D=D-1',
                 '@ARG',
                 'M=D',
 
@@ -604,8 +601,7 @@ describe('CodeWriter', () => {
                 'D=D-1',
                 'D=D-1',
                 'D=D-1',
-                'A=D-1',
-                'D=M',
+                'D=D-1',
                 '@LCL',
                 'M=D',
 

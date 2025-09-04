@@ -323,23 +323,20 @@ export const genReturn = (): Array<string> => ([
     'M=D+1', // SP = ARG + 1
     '@FRAME',
     'D=M',
-    'A=D-1',
-    'D=M',
+    'D=D-1',
     '@THAT',
     'M=D', // THAT = *(FRAME-1)
     '@FRAME',
     'D=M',
     'D=D-1',
-    'A=D-1',
-    'D=M',
+    'D=D-1',
     '@THIS',
     'M=D', // THIS = *(FRAME-2)
     '@FRAME',
     'D=M',
     'D=D-1',
     'D=D-1',
-    'A=D-1',
-    'D=M',
+    'D=D-1',
     '@ARG',
     'M=D', // ARG = *(FRAME-3)
     '@FRAME',
@@ -347,8 +344,7 @@ export const genReturn = (): Array<string> => ([
     'D=D-1',
     'D=D-1',
     'D=D-1',
-    'A=D-1',
-    'D=M',
+    'D=D-1',
     '@LCL',
     'M=D', // LCL = *(FRAME-4)
     '@RETADDR',
