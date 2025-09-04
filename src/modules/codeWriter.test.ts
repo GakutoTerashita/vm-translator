@@ -1,4 +1,4 @@
-import { readFileSync, unlink } from "fs";
+import { readFileSync, unlink } from 'fs';
 import {
     createStream,
     write,
@@ -11,8 +11,8 @@ import {
     genFunction,
     genReturn,
     genCall,
-} from "./codeWriter";
-import { randomUUID } from "crypto";
+} from './codeWriter';
+import { randomUUID } from 'crypto';
 
 const streamEndAsync = (stream: NodeJS.WritableStream): Promise<void> => {
     return new Promise(resolve => {
@@ -54,17 +54,17 @@ describe('CodeWriter', () => {
             const data = genPush('local', 2);
 
             expect(data).toEqual([
-                "// push local 2",
-                "@LCL",
-                "D=M",
-                "@2",
-                "A=D+A",
-                "D=M",
-                "@SP",
-                "A=M",
-                "M=D",
-                "@SP",
-                "M=M+1"
+                '// push local 2',
+                '@LCL',
+                'D=M',
+                '@2',
+                'A=D+A',
+                'D=M',
+                '@SP',
+                'A=M',
+                'M=D',
+                '@SP',
+                'M=M+1'
             ]);
         });
 
@@ -72,14 +72,14 @@ describe('CodeWriter', () => {
             const data = genPush('constant', 5);
 
             expect(data).toEqual([
-                "// push constant 5",
-                "@5",
-                "D=A",
-                "@SP",
-                "A=M",
-                "M=D",
-                "@SP",
-                "M=M+1"
+                '// push constant 5',
+                '@5',
+                'D=A',
+                '@SP',
+                'A=M',
+                'M=D',
+                '@SP',
+                'M=M+1'
             ]);
         });
 
@@ -87,14 +87,14 @@ describe('CodeWriter', () => {
             const asm = genPush('pointer', 0);
 
             expect(asm).toEqual([
-                "// push pointer 0",
-                "@3",
-                "D=M",
-                "@SP",
-                "A=M",
-                "M=D",
-                "@SP",
-                "M=M+1"
+                '// push pointer 0',
+                '@3',
+                'D=M',
+                '@SP',
+                'A=M',
+                'M=D',
+                '@SP',
+                'M=M+1'
             ]);
         });
 
@@ -102,14 +102,14 @@ describe('CodeWriter', () => {
             const asm = genPush('pointer', 1);
 
             expect(asm).toEqual([
-                "// push pointer 1",
-                "@4",
-                "D=M",
-                "@SP",
-                "A=M",
-                "M=D",
-                "@SP",
-                "M=M+1"
+                '// push pointer 1',
+                '@4',
+                'D=M',
+                '@SP',
+                'A=M',
+                'M=D',
+                '@SP',
+                'M=M+1'
             ]);
         });
 
@@ -117,14 +117,14 @@ describe('CodeWriter', () => {
             const asm = genPush('temp', 2);
 
             expect(asm).toEqual([
-                "// push temp 2",
-                "@7",
-                "D=M",
-                "@SP",
-                "A=M",
-                "M=D",
-                "@SP",
-                "M=M+1",
+                '// push temp 2',
+                '@7',
+                'D=M',
+                '@SP',
+                'A=M',
+                'M=D',
+                '@SP',
+                'M=M+1',
             ]);
         });
 
@@ -136,14 +136,14 @@ describe('CodeWriter', () => {
             );
 
             expect(asm).toEqual([
-                "// push static 3",
-                "@hoge.3",
-                "D=M",
-                "@SP",
-                "A=M",
-                "M=D",
-                "@SP",
-                "M=M+1"
+                '// push static 3',
+                '@hoge.3',
+                'D=M',
+                '@SP',
+                'A=M',
+                'M=D',
+                '@SP',
+                'M=M+1'
             ]);
         });
     });
@@ -154,37 +154,37 @@ describe('CodeWriter', () => {
             const data = genPop('argument', 3);
 
             expect(data).toEqual([
-                "// pop argument 3",
-                "@ARG",
-                "D=M",
-                "@3",
-                "D=D+A",
-                "@R13", // R13 is allowed to be used as a temporal storage.
-                "M=D",
-                "@SP",
-                "AM=M-1",
-                "D=M",
-                "@R13",
-                "A=M",
-                "M=D",
+                '// pop argument 3',
+                '@ARG',
+                'D=M',
+                '@3',
+                'D=D+A',
+                '@R13', // R13 is allowed to be used as a temporal storage.
+                'M=D',
+                '@SP',
+                'AM=M-1',
+                'D=M',
+                '@R13',
+                'A=M',
+                'M=D',
             ]);
         });
 
         it('constant for pop is meaningless', () => {
             expect(() => genPop('constant', 5))
-                .toThrow("Pop operation on constant segment is not valid.");
+                .toThrow('Pop operation on constant segment is not valid.');
         });
 
         it('assembly code for pointer segment 0', () => {
             const asm = genPop('pointer', 0);
 
             expect(asm).toEqual([
-                "// pop pointer 0",
-                "@SP",
-                "AM=M-1",
-                "D=M",
-                "@3",
-                "M=D",
+                '// pop pointer 0',
+                '@SP',
+                'AM=M-1',
+                'D=M',
+                '@3',
+                'M=D',
             ]);
         });
 
@@ -192,12 +192,12 @@ describe('CodeWriter', () => {
             const asm = genPop('pointer', 1);
 
             expect(asm).toEqual([
-                "// pop pointer 1",
-                "@SP",
-                "AM=M-1",
-                "D=M",
-                "@4",
-                "M=D",
+                '// pop pointer 1',
+                '@SP',
+                'AM=M-1',
+                'D=M',
+                '@4',
+                'M=D',
             ]);
         });
 
@@ -205,12 +205,12 @@ describe('CodeWriter', () => {
             const asm = genPop('temp', 4);
 
             expect(asm).toEqual([
-                "// pop temp 4",
-                "@SP",
-                "AM=M-1",
-                "D=M",
-                "@9",
-                "M=D",
+                '// pop temp 4',
+                '@SP',
+                'AM=M-1',
+                'D=M',
+                '@9',
+                'M=D',
             ]);
         });
 
@@ -222,12 +222,12 @@ describe('CodeWriter', () => {
             );
 
             expect(asm).toEqual([
-                "// pop static 5",
-                "@SP",
-                "AM=M-1",
-                "D=M",
-                "@hoge.5",
-                "M=D",
+                '// pop static 5',
+                '@SP',
+                'AM=M-1',
+                'D=M',
+                '@hoge.5',
+                'M=D',
             ]);
         });
 
@@ -239,15 +239,15 @@ describe('CodeWriter', () => {
                 const data = genArithmetic('add', 0);
 
                 expect(data.asm).toEqual([
-                    "// add",
-                    "@SP",
-                    "AM=M-1",
-                    "D=M",
-                    "@SP",
-                    "AM=M-1",
-                    "M=D+M",
-                    "@SP",
-                    "M=M+1"
+                    '// add',
+                    '@SP',
+                    'AM=M-1',
+                    'D=M',
+                    '@SP',
+                    'AM=M-1',
+                    'M=D+M',
+                    '@SP',
+                    'M=M+1'
                 ]);
             });
         });
@@ -257,15 +257,15 @@ describe('CodeWriter', () => {
                 const data = genArithmetic('sub', 0);
 
                 expect(data.asm).toEqual([
-                    "// sub",
-                    "@SP",
-                    "AM=M-1",
-                    "D=M",
-                    "@SP",
-                    "AM=M-1",
-                    "M=M-D",
-                    "@SP",
-                    "M=M+1"
+                    '// sub',
+                    '@SP',
+                    'AM=M-1',
+                    'D=M',
+                    '@SP',
+                    'AM=M-1',
+                    'M=M-D',
+                    '@SP',
+                    'M=M+1'
                 ]);
             });
         });
@@ -275,12 +275,12 @@ describe('CodeWriter', () => {
                 const data = genArithmetic('neg', 0);
 
                 expect(data.asm).toEqual([
-                    "// neg",
-                    "@SP",
-                    "AM=M-1",
-                    "M=-M",
-                    "@SP",
-                    "M=M+1"
+                    '// neg',
+                    '@SP',
+                    'AM=M-1',
+                    'M=-M',
+                    '@SP',
+                    'M=M+1'
                 ]);
             });
         });
@@ -290,27 +290,27 @@ describe('CodeWriter', () => {
                 const data = genArithmetic('eq', 0);
 
                 expect(data.asm).toEqual([
-                    "// eq",
-                    "@SP",
-                    "AM=M-1",
-                    "D=M",
-                    "@SP",
-                    "AM=M-1",
-                    "D=M-D",
-                    "@EQ_TRUE_0",
-                    "D;JEQ",
-                    "@SP",
-                    "A=M",
-                    "M=0", // false
-                    "@END_EQ_0",
-                    "0;JMP",
-                    "(EQ_TRUE_0)",
-                    "@SP",
-                    "A=M",
-                    "M=-1", // true
-                    "(END_EQ_0)",
-                    "@SP",
-                    "M=M+1"
+                    '// eq',
+                    '@SP',
+                    'AM=M-1',
+                    'D=M',
+                    '@SP',
+                    'AM=M-1',
+                    'D=M-D',
+                    '@EQ_TRUE_0',
+                    'D;JEQ',
+                    '@SP',
+                    'A=M',
+                    'M=0', // false
+                    '@END_EQ_0',
+                    '0;JMP',
+                    '(EQ_TRUE_0)',
+                    '@SP',
+                    'A=M',
+                    'M=-1', // true
+                    '(END_EQ_0)',
+                    '@SP',
+                    'M=M+1'
                 ]);
             });
 
@@ -327,27 +327,27 @@ describe('CodeWriter', () => {
                 const data = genArithmetic('gt', 0);
 
                 expect(data.asm).toEqual([
-                    "// gt",
-                    "@SP",
-                    "AM=M-1",
-                    "D=M",
-                    "@SP",
-                    "AM=M-1",
-                    "D=M-D",
-                    "@GT_TRUE_0",
-                    "D;JGT",
-                    "@SP",
-                    "A=M",
-                    "M=0", // false
-                    "@END_GT_0",
-                    "0;JMP",
-                    "(GT_TRUE_0)",
-                    "@SP",
-                    "A=M",
-                    "M=-1", // true
-                    "(END_GT_0)",
-                    "@SP",
-                    "M=M+1"
+                    '// gt',
+                    '@SP',
+                    'AM=M-1',
+                    'D=M',
+                    '@SP',
+                    'AM=M-1',
+                    'D=M-D',
+                    '@GT_TRUE_0',
+                    'D;JGT',
+                    '@SP',
+                    'A=M',
+                    'M=0', // false
+                    '@END_GT_0',
+                    '0;JMP',
+                    '(GT_TRUE_0)',
+                    '@SP',
+                    'A=M',
+                    'M=-1', // true
+                    '(END_GT_0)',
+                    '@SP',
+                    'M=M+1'
                 ]);
             });
 
@@ -364,27 +364,27 @@ describe('CodeWriter', () => {
                 const data = genArithmetic('lt', 0);
 
                 expect(data.asm).toEqual([
-                    "// lt",
-                    "@SP",
-                    "AM=M-1",
-                    "D=M",
-                    "@SP",
-                    "AM=M-1",
-                    "D=M-D",
-                    "@LT_TRUE_0",
-                    "D;JLT",
-                    "@SP",
-                    "A=M",
-                    "M=0", // false
-                    "@END_LT_0",
-                    "0;JMP",
-                    "(LT_TRUE_0)",
-                    "@SP",
-                    "A=M",
-                    "M=-1", // true
-                    "(END_LT_0)",
-                    "@SP",
-                    "M=M+1"
+                    '// lt',
+                    '@SP',
+                    'AM=M-1',
+                    'D=M',
+                    '@SP',
+                    'AM=M-1',
+                    'D=M-D',
+                    '@LT_TRUE_0',
+                    'D;JLT',
+                    '@SP',
+                    'A=M',
+                    'M=0', // false
+                    '@END_LT_0',
+                    '0;JMP',
+                    '(LT_TRUE_0)',
+                    '@SP',
+                    'A=M',
+                    'M=-1', // true
+                    '(END_LT_0)',
+                    '@SP',
+                    'M=M+1'
                 ]);
             });
 
@@ -401,15 +401,15 @@ describe('CodeWriter', () => {
                 const data = genArithmetic('and', 0);
 
                 expect(data.asm).toEqual([
-                    "// and",
-                    "@SP",
-                    "AM=M-1",
-                    "D=M",
-                    "@SP",
-                    "AM=M-1",
-                    "M=D&M",
-                    "@SP",
-                    "M=M+1"
+                    '// and',
+                    '@SP',
+                    'AM=M-1',
+                    'D=M',
+                    '@SP',
+                    'AM=M-1',
+                    'M=D&M',
+                    '@SP',
+                    'M=M+1'
                 ]);
             });
         });
@@ -419,15 +419,15 @@ describe('CodeWriter', () => {
                 const data = genArithmetic('or', 0);
 
                 expect(data.asm).toEqual([
-                    "// or",
-                    "@SP",
-                    "AM=M-1",
-                    "D=M",
-                    "@SP",
-                    "AM=M-1",
-                    "M=D|M",
-                    "@SP",
-                    "M=M+1"
+                    '// or',
+                    '@SP',
+                    'AM=M-1',
+                    'D=M',
+                    '@SP',
+                    'AM=M-1',
+                    'M=D|M',
+                    '@SP',
+                    'M=M+1'
                 ]);
             });
         });
@@ -437,12 +437,12 @@ describe('CodeWriter', () => {
                 const data = genArithmetic('not', 0);
 
                 expect(data.asm).toEqual([
-                    "// not",
-                    "@SP",
-                    "AM=M-1",
-                    "M=!M",
-                    "@SP",
-                    "M=M+1"
+                    '// not',
+                    '@SP',
+                    'AM=M-1',
+                    'M=!M',
+                    '@SP',
+                    'M=M+1'
                 ]);
             });
         });
@@ -463,9 +463,9 @@ describe('CodeWriter', () => {
         it('generates asm of jump', () => {
             const asm = genGoto('MY_LABEL');
             expect(asm).toEqual([
-                "// goto MY_LABEL",
-                "@MY_LABEL",
-                "0;JMP",
+                '// goto MY_LABEL',
+                '@MY_LABEL',
+                '0;JMP',
             ]);
         });
     });
@@ -474,12 +474,12 @@ describe('CodeWriter', () => {
         it('generates asm of conditional jump', () => {
             const asm = genIf('MY_LABEL');
             expect(asm).toEqual([
-                "// if-goto MY_LABEL",
-                "@SP",
-                "AM=M-1",
-                "D=M",
-                "@MY_LABEL",
-                "D;JNE"
+                '// if-goto MY_LABEL',
+                '@SP',
+                'AM=M-1',
+                'D=M',
+                '@MY_LABEL',
+                'D;JNE'
             ]);
         });
     });
@@ -505,35 +505,35 @@ describe('CodeWriter', () => {
             // "M=M+1"
 
             expect(asm).toEqual([
-                "// function hoge 3",
+                '// function hoge 3',
                 `(${functionName})`,
 
-                "// push constant 0",
-                "@0",
-                "D=A",
-                "@SP",
-                "A=M",
-                "M=D",
-                "@SP",
-                "M=M+1",
+                '// push constant 0',
+                '@0',
+                'D=A',
+                '@SP',
+                'A=M',
+                'M=D',
+                '@SP',
+                'M=M+1',
 
-                "// push constant 0",
-                "@0",
-                "D=A",
-                "@SP",
-                "A=M",
-                "M=D",
-                "@SP",
-                "M=M+1",
+                '// push constant 0',
+                '@0',
+                'D=A',
+                '@SP',
+                'A=M',
+                'M=D',
+                '@SP',
+                'M=M+1',
 
-                "// push constant 0",
-                "@0",
-                "D=A",
-                "@SP",
-                "A=M",
-                "M=D",
-                "@SP",
-                "M=M+1",
+                '// push constant 0',
+                '@0',
+                'D=A',
+                '@SP',
+                'A=M',
+                'M=D',
+                '@SP',
+                'M=M+1',
             ]);
         });
     });
@@ -543,142 +543,152 @@ describe('CodeWriter', () => {
             const asm = genReturn();
 
             expect(asm).toEqual([
-                "// return",
-                "@LCL",
-                "D=M",
-                "@FRAME",
-                "M=D",
-                "D=D-1",
-                "D=D-1",
-                "D=D-1",
-                "D=D-1",
-                "D=D-1",
-                "@retaddr",
-                "M=D",
+                '// return',
+                '@LCL',
+                'D=M',
+                '@FRAME',
+                'M=D',
+                'D=D-1',
+                'D=D-1',
+                'D=D-1',
+                'D=D-1',
+                'D=D-1',
+                '@RETADDR',
+                'M=D',
 
-                "// pop argument 0",
-                "@ARG",
-                "D=M",
-                "@0",
-                "D=D+A",
-                "@R13",
-                "M=D",
-                "@SP",
-                "AM=M-1",
-                "D=M",
-                "@R13",
-                "A=M",
-                "M=D",
+                '// pop argument 0',
+                '@ARG',
+                'D=M',
+                '@0',
+                'D=D+A',
+                '@R13',
+                'M=D',
+                '@SP',
+                'AM=M-1',
+                'D=M',
+                '@R13',
+                'A=M',
+                'M=D',
 
-                "@ARG",
-                "D=M",
-                "@SP",
-                "M=D+1",
+                '@ARG',
+                'D=M',
+                '@SP',
+                'M=D+1',
 
-                "@FRAME",
-                "D=M",
-                "A=D-1",
-                "D=M",
-                "@THAT",
-                "M=D",
+                '@FRAME',
+                'D=M',
+                'A=D-1',
+                'D=M',
+                '@THAT',
+                'M=D',
 
-                "@FRAME",
-                "D=M",
-                "D=D-1",
-                "A=D-1",
-                "D=M",
-                "@THIS",
-                "M=D",
+                '@FRAME',
+                'D=M',
+                'D=D-1',
+                'A=D-1',
+                'D=M',
+                '@THIS',
+                'M=D',
 
-                "@FRAME",
-                "D=M",
-                "D=D-1",
-                "D=D-1",
-                "A=D-1",
-                "D=M",
-                "@ARG",
-                "M=D",
+                '@FRAME',
+                'D=M',
+                'D=D-1',
+                'D=D-1',
+                'A=D-1',
+                'D=M',
+                '@ARG',
+                'M=D',
 
-                "@FRAME",
-                "D=M",
-                "D=D-1",
-                "D=D-1",
-                "D=D-1",
-                "A=D-1",
-                "D=M",
-                "@LCL",
-                "M=D",
+                '@FRAME',
+                'D=M',
+                'D=D-1',
+                'D=D-1',
+                'D=D-1',
+                'A=D-1',
+                'D=M',
+                '@LCL',
+                'M=D',
 
-                "@retaddr",
-                "A=M",
-                "0;JMP",
+                '@RETADDR',
+                'A=M',
+                '0;JMP',
             ]);
         });
     });
 
     describe('genCall', () => {
         it('generates asm of call', () => {
-            const funcName = "Hoge.fuga";
+            const funcName = 'Hoge.fuga';
             const nArgs = 3;
-            const asm = genCall(funcName, nArgs);
+            const { asm } = genCall(0, funcName, nArgs);
 
             expect(asm).toEqual([
                 `// call ${funcName} ${nArgs}`,
 
-                `@${funcName.replace(/\./g, "_").toUpperCase()}_RETADDR`,
-                "D=A",
-                "@SP",
-                "A=M",
-                "M=D",
-                "@SP",
-                "M=M+1",
+                `@${funcName}.retaddr.${0}`,
+                'D=A',
+                '@SP',
+                'A=M',
+                'M=D',
+                '@SP',
+                'M=M+1',
 
-                "@LCL",
-                "D=A",
-                "@SP",
-                "A=M",
-                "M=D",
-                "@SP",
-                "M=M+1",
+                '@LCL',
+                'D=M',
+                '@SP',
+                'A=M',
+                'M=D',
+                '@SP',
+                'M=M+1',
 
-                "@ARG",
-                "D=A",
-                "@SP",
-                "A=M",
-                "M=D",
-                "@SP",
-                "M=M+1",
+                '@ARG',
+                'D=M',
+                '@SP',
+                'A=M',
+                'M=D',
+                '@SP',
+                'M=M+1',
 
-                "@THIS",
-                "D=A",
-                "@SP",
-                "A=M",
-                "M=D",
-                "@SP",
-                "M=M+1",
+                '@THIS',
+                'D=M',
+                '@SP',
+                'A=M',
+                'M=D',
+                '@SP',
+                'M=M+1',
 
-                "@THAT",
-                "D=A",
-                "@SP",
-                "A=M",
-                "M=D",
-                "@SP",
-                "M=M+1",
+                '@THAT',
+                'D=M',
+                '@SP',
+                'A=M',
+                'M=D',
+                '@SP',
+                'M=M+1',
 
-                "@SP",
-                "D=M",
-                ...Array.from({ length: nArgs + 5 }, () => "D=D-1").flat(),
-                "@ARG",
-                "M=D",
-                "@SP",
-                "D=M",
-                "@LCL",
-                "M=D",
+                '@SP',
+                'D=M',
+                `@${nArgs + 5}`,
+                'D=D-A',
+                '@ARG',
+                'M=D',
+                '@SP',
+                'D=M',
+                '@LCL',
+                'M=D',
+
+                '@SP',
+                'D=M',
+                ...Array.from({ length: nArgs + 5 }, () => 'D=D-1').flat(),
+                '@ARG',
+                'M=D',
+                '@SP',
+                'D=M',
+                '@LCL',
+                'M=D',
 
                 `@${funcName}`,
-                "A=M",
-                "0;JMP",
-                `(${funcName.replace(/\./g, "_").toUpperCase()}_RETADDR)`,
+                '0;JMP',
+                `(${funcName}.retaddr.${0})`,
             ]);
         });
     });
@@ -689,17 +699,17 @@ describe('CodeWriter', () => {
             const fileName = genTestOutFileName();
             const stream = createStream(fileName);
             const data = [
-                "// push local 2",
-                "@LCL",
-                "D=M",
-                "@2",
-                "A=D+A",
-                "D=M",
-                "@SP",
-                "A=M",
-                "M=D",
-                "@SP",
-                "M=M+1"
+                '// push local 2',
+                '@LCL',
+                'D=M',
+                '@2',
+                'A=D+A',
+                'D=M',
+                '@SP',
+                'A=M',
+                'M=D',
+                '@SP',
+                'M=M+1'
             ];
             write(stream, data);
             await streamEndAsync(stream);
