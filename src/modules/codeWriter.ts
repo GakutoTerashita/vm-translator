@@ -1,4 +1,4 @@
-import { createWriteStream, WriteStream } from "fs";
+import { createWriteStream, WriteStream } from 'fs';
 
 export const createStream = (fileName: string): WriteStream => {
     const stream = createWriteStream(fileName, 'utf8');
@@ -78,7 +78,7 @@ export const genPop = (
     const segmentCode = resolveSegCode(segment);
 
     if (segmentCode === 'CONSTANT') {
-        throw new Error("Pop operation on constant segment is not valid.");
+        throw new Error('Pop operation on constant segment is not valid.');
     }
 
     output.push(`// pop ${segment} ${index}`);
@@ -324,39 +324,39 @@ export const genReturn = (): Array<string> => {
     asm.push('D=M');
     asm.push('@SP');
     asm.push('M=D+1');
-    asm.push("@FRAME");
-    asm.push("D=M");
-    asm.push("A=D-1");
-    asm.push("D=M");
-    asm.push("@THAT");
-    asm.push("M=D");
-    asm.push("@FRAME");
-    asm.push("D=M");
-    asm.push("D=D-1");
-    asm.push("A=D-1");
-    asm.push("D=M");
-    asm.push("@THIS");
-    asm.push("M=D");
-    asm.push("@FRAME");
-    asm.push("D=M");
-    asm.push("D=D-1");
-    asm.push("D=D-1");
-    asm.push("A=D-1");
-    asm.push("D=M");
-    asm.push("@ARG");
-    asm.push("M=D");
-    asm.push("@FRAME");
-    asm.push("D=M");
-    asm.push("D=D-1");
-    asm.push("D=D-1");
-    asm.push("D=D-1");
-    asm.push("A=D-1");
-    asm.push("D=M");
-    asm.push("@LCL");
-    asm.push("M=D");
-    asm.push("@retaddr");
-    asm.push("A=M");
-    asm.push("0;JMP");
+    asm.push('@FRAME');
+    asm.push('D=M');
+    asm.push('A=D-1');
+    asm.push('D=M');
+    asm.push('@THAT');
+    asm.push('M=D');
+    asm.push('@FRAME');
+    asm.push('D=M');
+    asm.push('D=D-1');
+    asm.push('A=D-1');
+    asm.push('D=M');
+    asm.push('@THIS');
+    asm.push('M=D');
+    asm.push('@FRAME');
+    asm.push('D=M');
+    asm.push('D=D-1');
+    asm.push('D=D-1');
+    asm.push('A=D-1');
+    asm.push('D=M');
+    asm.push('@ARG');
+    asm.push('M=D');
+    asm.push('@FRAME');
+    asm.push('D=M');
+    asm.push('D=D-1');
+    asm.push('D=D-1');
+    asm.push('D=D-1');
+    asm.push('A=D-1');
+    asm.push('D=M');
+    asm.push('@LCL');
+    asm.push('M=D');
+    asm.push('@retaddr');
+    asm.push('A=M');
+    asm.push('0;JMP');
     return asm;
 };
 
@@ -371,65 +371,68 @@ export const genCall = (
     asm: [
         `// call ${functionName} ${nArgs}`,
         `@${functionName}.retaddr.${labelNameGenCount}`,
-        "D=A",
-        "@SP",
-        "A=M",
-        "M=D",
-        "@SP",
-        "M=M+1",
+        'D=A',
+        '@SP',
+        'A=M',
+        'M=D',
+        '@SP',
+        'M=M+1',
 
-        "@LCL",
-        "D=M",
-        "@SP",
-        "A=M",
-        "M=D",
-        "@SP",
-        "M=M+1",
+        '@LCL',
+        'D=M',
+        '@SP',
+        'A=M',
+        'M=D',
+        '@SP',
+        'M=M+1',
 
-        "@ARG",
-        "D=M",
-        "@SP",
-        "A=M",
-        "M=D",
-        "@SP",
-        "M=M+1",
+        '@ARG',
+        'D=M',
+        '@SP',
+        'A=M',
+        'M=D',
+        '@SP',
+        'M=M+1',
 
-        "@THIS",
-        "D=M",
-        "@SP",
-        "A=M",
-        "M=D",
-        "@SP",
-        "M=M+1",
+        '@THIS',
+        'D=M',
+        '@SP',
+        'A=M',
+        'M=D',
+        '@SP',
+        'M=M+1',
 
-        "@THAT",
-        "D=M",
-        "@SP",
-        "A=M",
-        "M=D",
-        "@SP",
-        "M=M+1",
+        '@THAT',
+        'D=M',
+        '@SP',
+        'A=M',
+        'M=D',
+        '@SP',
+        'M=M+1',
 
-        "@SP",
-        "D=M",
+        '@SP',
+        'D=M',
         `@${nArgs + 5}`,
         'D=D-A',
-        "@ARG",
-        "M=D",
-        "@SP",
-        "D=M",
-        "@LCL",
-        "M=D",
+        '@ARG',
+        'M=D',
+        '@SP',
+        'D=M',
+        '@LCL',
+        'M=D',
 
-        "@SP",
-        "D=M",
-        ...Array.from({ length: nArgs + 5 }, () => "D=D-1").flat(),
-        "@ARG",
-        "M=D",
-        "@SP",
-        "D=M",
-        "@LCL",
-        "M=D",
+        '@SP',
+        'D=M',
+        ...Array.from({ length: nArgs + 5 }, () => 'D=D-1').flat(),
+        '@ARG',
+        'M=D',
+        '@SP',
+        'D=M',
+        '@LCL',
+        'M=D',
+
+        `@${functionName}`,
+        '0;JMP',
 
         `(${functionName}.retaddr.${labelNameGenCount})`,
     ],

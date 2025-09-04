@@ -1,8 +1,8 @@
-import { readdir, readFile } from "fs/promises";
-import { advance, arg1, arg2, breakLine, commandType, createParser, hasMoreLines, Parser, removeComments } from "./parser";
-import { createStream, genArithmetic, genCall, genFunction, genGoto, genIf, genLabel, genPop, genPush, genReturn, write } from "./codeWriter";
-import { WriteStream } from "fs";
-import path from "path";
+import { readdir, readFile } from 'fs/promises';
+import { advance, arg1, arg2, breakLine, commandType, createParser, hasMoreLines, Parser, removeComments } from './parser';
+import { createStream, genArithmetic, genCall, genFunction, genGoto, genIf, genLabel, genPop, genPush, genReturn, write } from './codeWriter';
+import { WriteStream } from 'fs';
+import path from 'path';
 
 const loadFileName = async (): Promise<{ stream: WriteStream, parsers: Array<[Parser, string]> }> => {
     const arg: string | undefined = process.argv[2];
@@ -157,12 +157,12 @@ export const translateVmToAsm = async () => {
 
     if (parsers.length > 1) {
         const asm: Array<string> = [
-            "// bootstrap code",
-            "@256",
-            "D=A",
-            "@SP",
-            "M=D",
-            ...genCall(0, "Sys.init", 0).asm.flat(),
+            '// bootstrap code',
+            '@256',
+            'D=A',
+            '@SP',
+            'M=D',
+            ...genCall(0, 'Sys.init', 0).asm.flat(),
         ];
 
         write(stream, asm);
