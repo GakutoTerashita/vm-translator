@@ -297,13 +297,11 @@ export const genIf = (labelName: string): Array<string> => {
     return asm;
 };
 
-export const genFunction = (functionName: string, nVars: number): Array<string> => {
-    const asm: Array<string> = [];
-    asm.push(`// function ${functionName} ${nVars}`);
-    asm.push(`(${functionName})`);
-    asm.push(...Array.from({ length: nVars }, () => genPush('constant', 0)).flat());
-    return asm;
-};
+export const genFunction = (functionName: string, nVars: number): Array<string> => ([
+    `// function ${functionName} ${nVars}`,
+    `(${functionName})`,
+    ...Array.from({ length: nVars }, () => genPush('constant', 0)).flat()
+]);
 
 export const genReturn = (): Array<string> => {
     const asm: Array<string> = [];
@@ -387,16 +385,6 @@ export const genCall = (
         'D=M',
         `@${nArgs + 5}`,
         'D=D-A',
-        '@ARG',
-        'M=D',
-        '@SP',
-        'D=M',
-        '@LCL',
-        'M=D',
-
-        '@SP',
-        'D=M',
-        ...Array.from({ length: nArgs + 5 }, () => 'D=D-1').flat(),
         '@ARG',
         'M=D',
         '@SP',

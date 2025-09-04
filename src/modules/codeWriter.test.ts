@@ -692,16 +692,6 @@ describe('CodeWriter', () => {
                 '@LCL',
                 'M=D',
 
-                '@SP',
-                'D=M',
-                ...Array.from({ length: nArgs + 5 }, () => 'D=D-1').flat(),
-                '@ARG',
-                'M=D',
-                '@SP',
-                'D=M',
-                '@LCL',
-                'M=D',
-
                 `@${funcName}`,
                 '0;JMP',
                 `(${funcName}.retaddr.${0})`,
