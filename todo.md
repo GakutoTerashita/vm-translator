@@ -37,7 +37,7 @@
 - [x] pass `SimpleFunction` test
     - [x] `function`
     - [x] `return`
-- [ ] pass `FibonacciElement` test
+- [x] pass `FibonacciElement` test
     - [x] process whole directory
     - [x] `call`
     - [x] implement bootstrap code generation
