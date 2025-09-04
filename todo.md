@@ -42,4 +42,4 @@
     - [x] `call`
     - [x] implement bootstrap code generation
     - [x] fix duplicate labels
-- [ ] pass `StaticsTest` test
+- [x] pass `StaticsTest` test
