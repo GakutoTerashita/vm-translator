@@ -317,7 +317,7 @@ export const genReturn = (): Array<string> => {
     asm.push('D=D-1');
     asm.push('D=D-1');
     asm.push('D=D-1');
-    asm.push('@retaddr');
+    asm.push('@RETADDR');
     asm.push('M=D');
     asm.push(...genPop('argument', 0).flat());
     asm.push('@ARG');
@@ -354,7 +354,7 @@ export const genReturn = (): Array<string> => {
     asm.push('D=M');
     asm.push('@LCL');
     asm.push('M=D');
-    asm.push('@retaddr');
+    asm.push('@RETADDR');
     asm.push('A=M');
     asm.push('0;JMP');
     return asm;

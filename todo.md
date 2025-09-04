@@ -41,5 +41,6 @@
     - [x] process whole directory
     - [x] `call`
     - [x] implement bootstrap code generation
-    - [ ] fix duplicate labels
+    - [x] fix duplicate labels
+    - [ ] `pop` with `argument` segment is not fully implemented
 - [ ] pass `StaticsTest` test
