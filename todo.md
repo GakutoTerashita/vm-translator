@@ -42,5 +42,4 @@
     - [x] `call`
     - [x] implement bootstrap code generation
     - [x] fix duplicate labels
-    - [ ] `pop` with `argument` segment is not fully implemented
 - [ ] pass `StaticsTest` test
