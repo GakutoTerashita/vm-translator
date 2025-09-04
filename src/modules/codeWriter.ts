@@ -303,60 +303,58 @@ export const genFunction = (functionName: string, nVars: number): Array<string> 
     ...Array.from({ length: nVars }, () => genPush('constant', 0)).flat()
 ]);
 
-export const genReturn = (): Array<string> => {
-    const asm: Array<string> = [];
-    asm.push('// return');
-    asm.push('@LCL');
-    asm.push('D=M');
-    asm.push('@FRAME');
-    asm.push('M=D');
-    asm.push('D=D-1');
-    asm.push('D=D-1');
-    asm.push('D=D-1');
-    asm.push('D=D-1');
-    asm.push('D=D-1');
-    asm.push('@RETADDR');
-    asm.push('M=D');
-    asm.push(...genPop('argument', 0).flat());
-    asm.push('@ARG');
-    asm.push('D=M');
-    asm.push('@SP');
-    asm.push('M=D+1');
-    asm.push('@FRAME');
-    asm.push('D=M');
-    asm.push('A=D-1');
-    asm.push('D=M');
-    asm.push('@THAT');
-    asm.push('M=D');
-    asm.push('@FRAME');
-    asm.push('D=M');
-    asm.push('D=D-1');
-    asm.push('A=D-1');
-    asm.push('D=M');
-    asm.push('@THIS');
-    asm.push('M=D');
-    asm.push('@FRAME');
-    asm.push('D=M');
-    asm.push('D=D-1');
-    asm.push('D=D-1');
-    asm.push('A=D-1');
-    asm.push('D=M');
-    asm.push('@ARG');
-    asm.push('M=D');
-    asm.push('@FRAME');
-    asm.push('D=M');
-    asm.push('D=D-1');
-    asm.push('D=D-1');
-    asm.push('D=D-1');
-    asm.push('A=D-1');
-    asm.push('D=M');
-    asm.push('@LCL');
-    asm.push('M=D');
-    asm.push('@RETADDR');
-    asm.push('A=M');
-    asm.push('0;JMP');
-    return asm;
-};
+export const genReturn = (): Array<string> => ([
+    '// return',
+    '@LCL',
+    'D=M',
+    '@FRAME',
+    'M=D', // FRAME = LCL
+    'D=D-1',
+    'D=D-1',
+    'D=D-1',
+    'D=D-1',
+    'D=D-1',
+    '@RETADDR',
+    'M=D', // RET = *(FRAME-5)
+    ...genPop('argument', 0).flat(), // *ARG = pop()
+    '@ARG',
+    'D=M',
+    '@SP',
+    'M=D+1', // SP = ARG + 1
+    '@FRAME',
+    'D=M',
+    'A=D-1',
+    'D=M',
+    '@THAT',
+    'M=D', // THAT = *(FRAME-1)
+    '@FRAME',
+    'D=M',
+    'D=D-1',
+    'A=D-1',
+    'D=M',
+    '@THIS',
+    'M=D', // THIS = *(FRAME-2)
+    '@FRAME',
+    'D=M',
+    'D=D-1',
+    'D=D-1',
+    'A=D-1',
+    'D=M',
+    '@ARG',
+    'M=D', // ARG = *(FRAME-3)
+    '@FRAME',
+    'D=M',
+    'D=D-1',
+    'D=D-1',
+    'D=D-1',
+    'A=D-1',
+    'D=M',
+    '@LCL',
+    'M=D', // LCL = *(FRAME-4)
+    '@RETADDR',
+    'A=M',
+    '0;JMP' // goto RET
+]);
 
 export const genCall = (
     labelNameGenCount: number,
